@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('tipo_persona');
             $table->string('alias')->unique()->nullable();
             $table->enum('genero', ['masculino', 'femenino'])->nullable();
+            $table->enum('calification',['1','2','3','4','5'])->references('id')->on('califications');
             $table->string('telefono')->nullable();
             $table->string('correo')->nullable();
             $table->string('ubicacion')->nullable();
