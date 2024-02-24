@@ -11,7 +11,7 @@ import Welcome from '@/Components/Welcome.vue';
             </h2>
         </template>
 
-        <div class="mt-3 mb-7 w-100 h-screen rounded-lg bg-blue-300">
+        <div class="mt-3 mb-7 w-100 h-screen rounded-lg bg-blue-300 dark:bg-inherit">
             <Welcome />
         </div>
     </AppLayout>
