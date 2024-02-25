@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('correo')->nullable();
             $table->string('ubicacion')->nullable();
             $table->string('ubigeo')->nullable();
+            $table->enum('calificacion', ['1', '2', '3', '4', '5'])->nullable();
             $table->timestamps();
             $table->char('estado')->comment('0-Inactivo/1-Activo')->default(1);
             $table->softDeletes();
