@@ -16,6 +16,8 @@ const props = defineProps({
     cols: Array,
 })
 
+console.log('odlir333', props.data);
+
 </script>
 <template>
     <fwb-table hoverable>
@@ -29,7 +31,15 @@ const props = defineProps({
         </fwb-table-head>
         <fwb-table-body>
             <fwb-table-row v-for="row in data" :key="row.id">
-                <fwb-table-cell v-for="(col, ind) in cols" :key="ind" v-html="row[col]"></fwb-table-cell>
+                <fwb-table-cell v-for="(col, ind) in cols" :key="ind">
+                    <slot
+                        :name="`cell(${col})`"
+                        :value="row[col]"
+                        :item="row"
+                    >
+                        {{ row[col] }}
+                    </slot>
+                </fwb-table-cell>
                 <fwb-table-cell class="center-items">
                     <fwb-a href="#">
                         <EditIcon />

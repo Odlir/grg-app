@@ -13,7 +13,7 @@ class Person extends Model
 
     protected $fillable = ['doc_types','nro_documento','nombre_legal', 'direccion',
         'tipo_persona','alias','genero', 'telefono', 'correo','ubicacion','ubigeo',
-        'calification'];
+        'rating'];
 
     protected $dates = ['deleted_at'];
 
