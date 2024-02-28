@@ -1,45 +1,227 @@
 <script setup>
-import {useForm} from '@inertiajs/vue3';
-import { ref } from 'vue';
+import Modal from "@/Components/Modal.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import TextInput from "@/Components/TextInput.vue";
+import InputError from "@/Components/InputError.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import SelectInput from "@/Components/SelectInput.vue";
+import { useForm } from "@inertiajs/vue3";
+import { ref, nextTick, onMounted } from "vue";
+import Swal from "sweetalert2";
+
+const nroDocRef = ref(null);
 const modal = ref(false);
+const doc_types = ref(null);
+const person_types = ref(null);
+const id = ref('');
 
 const form = useForm({
-    doc_types:'',
-    nro_documento:'',
-    nombre_legal:'',
-    direccion:'',
-    tipo_persona:'',
-    alias:'',
-    genero:'',
-    rating:'',
-    telefono:'',
-    correo:'',
-    ubicacion:'',
-    ubigeo:''
+    id: null,
+    doc_types: 2,
+    nro_documento: "",
+    nombre_legal: "",
+    direccion: "",
+    tipo_persona: 1,
+    alias: "",
+    genero: "",
+    rating: "",
+    telefono: "",
+    correo: "",
+    ubicacion: "",
+    ubigeo: "",
 });
+
+onMounted(() => {
+    getCatalogue();
+});
+
+const getCatalogue = () => {
+    axios.get(route("getDocTypes")).then((response) => {
+        doc_types.value = response.data;
+    });
+
+    axios.get(route("getPersonTypes")).then((response) => {
+        person_types.value = response.data;
+    });
+};
 
 const closeModal = () => {
     modal.value = false;
     form.reset();
+};
+
+const open = (idPerson = null) => {
+    id.value = idPerson;
+    nextTick(() => nroDocRef.value.focus());
+    form.clearErrors();
+    if (id.value) {
+        getPerson();
+    } else {
+        modal.value = true;
+    }
+};
+
+const getPerson = () => {
+    axios.get(route('people.show', id.value)).then((response) => {
+        Object.assign(form, response.data);
+        modal.value = true;
+    });
 }
 
-const open = (form = null) => {
-    modal.value = true;
-    if (form) form.value = form;
-}
+const save = () => {
+    form.clearErrors();
+    if (id.value) {
+        form.put(route("people.update", id.value), {
+            onSuccess: () => {
+                ok("Datos actualizados correctamente.");
+            },
+        });
+    } else {
+        form.post(route("people.store"), {
+            onSuccess: () => {
+                ok("Datos creados correctamente.");
+            },
+        });
+    }
+};
+
+const ok = (msj) => {
+    form.reset();
+    closeModal();
+    Swal.fire({ title: msj, icon: "success", confirmButtonText: "Aceptar" });
+};
 
 defineExpose({
-  open
+    open,
 });
-
 </script>
 
 <template>
     <Modal :show="modal" @close="closeModal">
-        <h2 class="p-3 text-lg font.medium text-hray-900">{{ form ? 'Editar' : 'Crear' }}</h2>
+        <h2 class="p-3 text-xl font-black text-hray-900 dark:text-white">
+            {{
+                id
+                    ? "Editar cliente / proveedor"
+                    : "Nuevo cliente / proveedor"
+            }}
+        </h2>
+        <hr />
+        <div class="flex flex-wrap items-center mt-6">
+            <div class="sm:w-6/12 w-full p-3 mt-1">
+                <div class="sm:flex items-center justify-between">
+                    <InputLabel
+                        for="doc_types"
+                        value="Tipo de documento"
+                    ></InputLabel>
+                    <div class="sm:w-3/4">
+                        <SelectInput
+                            id="doc_types"
+                            :options="doc_types"
+                            name="descripcion"
+                            v-model="form.doc_types"
+                            type="text"
+                            class="w-full"
+                        ></SelectInput>
+                        <InputError
+                            :message="form.errors.doc_types"
+                            class="mt-2"
+                        ></InputError>
+                    </div>
+                </div>
+            </div>
+            <div class="sm:w-6/12 w-full p-3 mt-1">
+                <div class="sm:flex items-center justify-between">
+                    <InputLabel
+                        for="nro_documento"
+                        value="N° de Documento *"
+                    ></InputLabel>
+                    <div class="sm:w-3/4">
+                        <TextInput
+                            id="nro_documento"
+                            v-model="form.nro_documento"
+                            type="text"
+                            class="w-full"
+                            ref="nroDocRef"
+                        ></TextInput>
+
+                        <InputError
+                            :message="form.errors.nro_documento"
+                            class="mt-2"
+                        ></InputError>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full p-3 mt-1">
+                <div class="sm:flex items-center justify-between">
+                    <InputLabel
+                        for="nombre_legal"
+                        value="Nombre legal *"
+                    ></InputLabel>
+                    <div class="sm:w-3/4">
+                        <TextInput
+                            id="nombre_legal"
+                            v-model="form.nombre_legal"
+                            type="text"
+                            class="w-full"
+                        ></TextInput>
+                        <InputError
+                            :message="form.errors.nombre_legal"
+                            class="mt-2"
+                        ></InputError>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full p-3 mt-1">
+                <div class="sm:flex items-center justify-between">
+                    <InputLabel
+                        for="direccion"
+                        value="Dirección *"
+                    ></InputLabel>
+                    <div class="sm:w-3/4">
+                        <TextInput
+                            id="direccion"
+                            v-model="form.direccion"
+                            type="text"
+                            class="w-full"
+                        ></TextInput>
+                        <InputError
+                            :message="form.errors.direccion"
+                            class="mt-2"
+                        ></InputError>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full p-3 mt-1">
+                <div class="sm:flex w-full items-center justify-between">
+                    <InputLabel for="tipo_persona" value="Tipo"></InputLabel>
+                    <div class="sm:w-3/4">
+                        <SelectInput
+                            id="tipo_persona"
+                            :options="person_types"
+                            name="descripcion"
+                            v-model="form.tipo_persona"
+                            type="text"
+                            class="w-full"
+                        ></SelectInput>
+
+                        <InputError
+                            :message="form.errors.tipo_persona"
+                            class="mt-2"
+                        ></InputError>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-3 mt-6 flex justify-between">
+            <SecondaryButton :disabled="form.processing" @click="closeModal">
+                Cancelar
+            </SecondaryButton>
+            <PrimaryButton :disabled="form.processing" @click="save">
+                <i class="fa-solid fa-save"></i> Guardar
+            </PrimaryButton>
+        </div>
     </Modal>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

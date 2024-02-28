@@ -36,7 +36,7 @@ import { Link } from '@inertiajs/vue3';
                     />
                 </svg>
             </template>
-            <Link :href="route('person.index')">
+            <Link :href="route('people.index')">
                 <template #default>Clientes</template>
             </Link>
         </fwb-sidebar-item>

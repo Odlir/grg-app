@@ -11,7 +11,6 @@ const props = defineProps({
     people: Object,
 });
 
-const newData = props.people.data;
 const headers = ['Razon Social', 'Documento', 'Tipo', 'Calificacion', 'Telefono'];
 const cols = ['nombre_legal', 'docdesc', 'perdesc', 'rating', 'telefono'];
 const modalRegEditRef = ref(null);
@@ -30,7 +29,7 @@ const openModal = (form = null) =>{
             </PrimaryButton>
         </div>
         <div class="pt-3">
-            <Table :data="newData" :headers="headers" :cols="cols">
+            <Table :data="people.data" :headers="headers" :cols="cols" @onClickEdit="openModal">
                 <template #cell(docdesc)="{ value, item }">
                     <strong>{{ item.docdesc.toUpperCase() }}</strong>
                     {{ item.nro_documento }}
@@ -39,7 +38,7 @@ const openModal = (form = null) =>{
                     <Rating :size="sm" :rating="item.rating" />
                 </template>
             </Table>
-            <Pagination :pagination="people.meta" />
+            <Pagination :links="people.links" />
         </div>
     </AppLayout>
     <CreateEditModal ref="modalRegEditRef"></CreateEditModal>

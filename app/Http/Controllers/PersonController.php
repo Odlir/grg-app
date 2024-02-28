@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PersonRequest;
 use App\Http\Resources\PersonResource;
 use App\Models\Person;
 use Illuminate\Http\Request;
@@ -21,24 +22,18 @@ class PersonController extends Controller
             ->paginate(10);
 
         return Inertia::render('People/Index', [
-            'people' => PersonResource::collection($people)
+            'people' => $people
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PersonRequest $request)
     {
-        //
+        $data = new Person($request->input());
+        $data->save();
+        return redirect('people');
     }
 
     /**
@@ -46,15 +41,7 @@ class PersonController extends Controller
      */
     public function show(Person $person)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Person $person)
-    {
-        //
+        return $person;
     }
 
     /**
@@ -62,7 +49,8 @@ class PersonController extends Controller
      */
     public function update(Request $request, Person $person)
     {
-        //
+        $person->update($request->input());
+        return redirect('people');
     }
 
     /**
