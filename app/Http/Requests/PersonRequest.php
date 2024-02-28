@@ -25,6 +25,9 @@ class PersonRequest extends FormRequest
         $rules['direccion'] = 'required';
         $rules['doc_types'] = 'required|exists:doc_types,id';
         $rules['tipo_persona'] = 'required|exists:person_types,id';
+        $rules['correo'] = 'nullable|email';
+        $rules['genero'] = "nullable|in:masculino,femenino";
+        $rules['rating'] = "nullable|in:1,2,3,4,5";
 
         return $rules;
     }
@@ -38,6 +41,7 @@ class PersonRequest extends FormRequest
         $messages['doc_types.exists'] = 'El tipo de documento seleccionado no existe.';
         $messages['tipo_persona.required'] = 'El tipo de persona es requerido.';
         $messages['tipo_persona.exists'] = 'El tipo de persona seleccionado no existe.';
+        $messages['correo.email'] = "El correo debe tener un formato correcto.";
 
         if ($this->tipo_cliente == "1") {
             $messages['nro_documento.required'] = 'El DNI es requerido.';

@@ -7,14 +7,25 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import { useForm } from "@inertiajs/vue3";
-import { ref, nextTick, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import Swal from "sweetalert2";
 
-const nroDocRef = ref(null);
 const modal = ref(false);
 const doc_types = ref(null);
 const person_types = ref(null);
-const id = ref('');
+const id = ref("");
+const isOpenAdvancedOptions = ref(false);
+const genders = ref([
+    { id: "masculino", descripcion: "Masculino" },
+    { id: "femenino", descripcion: "Femenino" },
+]);
+const ratings = ref([
+    { id: "1", descripcion: "Muy malo" },
+    { id: "2", descripcion: "Malo" },
+    { id: "3", descripcion: "Bueno" },
+    { id: "4", descripcion: "Muy bueno" },
+    { id: "5", descripcion: "Excelente" }
+]);
 
 const form = useForm({
     id: null,
@@ -53,7 +64,6 @@ const closeModal = () => {
 
 const open = (idPerson = null) => {
     id.value = idPerson;
-    nextTick(() => nroDocRef.value.focus());
     form.clearErrors();
     if (id.value) {
         getPerson();
@@ -63,11 +73,11 @@ const open = (idPerson = null) => {
 };
 
 const getPerson = () => {
-    axios.get(route('people.show', id.value)).then((response) => {
+    axios.get(route("people.show", id.value)).then((response) => {
         Object.assign(form, response.data);
         modal.value = true;
     });
-}
+};
 
 const save = () => {
     form.clearErrors();
@@ -101,9 +111,7 @@ defineExpose({
     <Modal :show="modal" @close="closeModal">
         <h2 class="p-3 text-xl font-black text-hray-900 dark:text-white">
             {{
-                id
-                    ? "Editar cliente / proveedor"
-                    : "Nuevo cliente / proveedor"
+                id ? "Editar cliente / proveedor" : "Nuevo cliente / proveedor"
             }}
         </h2>
         <hr />
@@ -142,7 +150,6 @@ defineExpose({
                             v-model="form.nro_documento"
                             type="text"
                             class="w-full"
-                            ref="nroDocRef"
                         ></TextInput>
 
                         <InputError
@@ -212,6 +219,107 @@ defineExpose({
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="flex flex-wrap items-center mt-6">
+            <h5
+                class="ml-3 text-white cursor-pointer hover:underline w-full"
+                @click="isOpenAdvancedOptions = !isOpenAdvancedOptions"
+            >
+                {{ isOpenAdvancedOptions ? "Ocultar" : "Ver" }} opciones
+                avanzadas
+            </h5>
+            <template v-if="isOpenAdvancedOptions">
+                <div class="w-full p-3 mt-1">
+                    <div class="sm:flex items-center justify-between">
+                        <InputLabel for="alias" value="Alias"></InputLabel>
+                        <div class="sm:w-3/4">
+                            <TextInput
+                                id="alias"
+                                v-model="form.alias"
+                                type="text"
+                                class="w-full"
+                            ></TextInput>
+                            <InputError
+                                :message="form.errors.alias"
+                                class="mt-2"
+                            ></InputError>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full p-3 mt-1">
+                    <div class="sm:flex w-full items-center justify-between">
+                        <InputLabel for="genero" value="Género"></InputLabel>
+                        <div class="sm:w-3/4">
+                            <SelectInput
+                                id="genero"
+                                :options="genders"
+                                name="descripcion"
+                                v-model="form.genero"
+                                type="text"
+                                class="w-full"
+                            ></SelectInput>
+
+                            <InputError
+                                :message="form.errors.genero"
+                                class="mt-2"
+                            ></InputError>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full p-3 mt-1">
+                    <div class="sm:flex items-center justify-between">
+                        <InputLabel for="telefono" value="Teléfono"></InputLabel>
+                        <div class="sm:w-3/4">
+                            <TextInput
+                                id="telefono"
+                                v-model="form.telefono"
+                                type="text"
+                                class="w-full"
+                            ></TextInput>
+                            <InputError
+                                :message="form.errors.telefono"
+                                class="mt-2"
+                            ></InputError>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full p-3 mt-1">
+                    <div class="sm:flex items-center justify-between">
+                        <InputLabel for="correo" value="Correo electrónico"></InputLabel>
+                        <div class="sm:w-3/4">
+                            <TextInput
+                                id="correo"
+                                v-model="form.correo"
+                                type="text"
+                                class="w-full"
+                            ></TextInput>
+                            <InputError
+                                :message="form.errors.correo"
+                                class="mt-2"
+                            ></InputError>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full p-3 mt-1">
+                    <div class="sm:flex items-center justify-between">
+                        <InputLabel for="rating" value="Calificación"></InputLabel>
+                        <div class="sm:w-3/4">
+                            <SelectInput
+                                id="rating"
+                                :options="ratings"
+                                name="descripcion"
+                                v-model="form.rating"
+                                type="text"
+                                class="w-full"
+                            ></SelectInput>
+                            <InputError
+                                :message="form.errors.rating"
+                                class="mt-2"
+                            ></InputError>
+                        </div>
+                    </div>
+                </div>
+            </template>
         </div>
         <div class="p-3 mt-6 flex justify-between">
             <SecondaryButton :disabled="form.processing" @click="closeModal">
