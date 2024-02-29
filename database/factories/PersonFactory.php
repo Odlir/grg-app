@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Distrito;
 use App\Models\DocType;
 use App\Models\personType;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -31,7 +32,7 @@ class PersonFactory extends Factory
             'telefono' => fake()->numerify('###-###-###'),
             'correo' => fake()->email(),
             'ubicacion' => Str::random(10),
-            'ubigeo' => Str::random(6),
+            'ubigeo' => Distrito::all()->random()->id,
         ];
     }
 }

@@ -26,4 +26,9 @@ class Person extends Model
     {
         return $this->hasOne(personType::class, 'id');
     }
+
+    public function distrito()
+    {
+        return $this->belongsTo(Distrito::class, 'ubigeo', 'id');
+    }
 }

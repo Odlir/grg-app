@@ -41,6 +41,8 @@ class PersonController extends Controller
      */
     public function show(Person $person)
     {
+        $person->load('distrito.provincia.departamento');
+
         return $person;
     }
 

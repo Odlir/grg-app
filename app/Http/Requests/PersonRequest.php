@@ -43,7 +43,7 @@ class PersonRequest extends FormRequest
         $messages['tipo_persona.exists'] = 'El tipo de persona seleccionado no existe.';
         $messages['correo.email'] = "El correo debe tener un formato correcto.";
 
-        if ($this->tipo_cliente == "1") {
+        if ($this->doc_types == "1") {
             $messages['nro_documento.required'] = 'El DNI es requerido.';
             $messages['nro_documento.digits'] = 'El DNI debe ser numérico y tener 8 digitos.';
             $messages['nro_documento.unique'] = 'El DNI ya existe.';

@@ -13,6 +13,9 @@ import Swal from "sweetalert2";
 const modal = ref(false);
 const doc_types = ref(null);
 const person_types = ref(null);
+const departments = ref([]);
+const provinces = ref([]);
+const districts = ref([]);
 const id = ref("");
 const isOpenAdvancedOptions = ref(false);
 const genders = ref([
@@ -24,7 +27,7 @@ const ratings = ref([
     { id: "2", descripcion: "Malo" },
     { id: "3", descripcion: "Bueno" },
     { id: "4", descripcion: "Muy bueno" },
-    { id: "5", descripcion: "Excelente" }
+    { id: "5", descripcion: "Excelente" },
 ]);
 
 const form = useForm({
@@ -37,10 +40,19 @@ const form = useForm({
     alias: "",
     genero: "",
     rating: "",
+    distrito: {
+        nombre: "",
+        provincia: {
+            nombre: "",
+            departamento: {
+                nombre: "",
+            },
+        },
+    },
     telefono: "",
     correo: "",
     ubicacion: "",
-    ubigeo: "",
+    ubigeo: ""
 });
 
 onMounted(() => {
@@ -55,6 +67,34 @@ const getCatalogue = () => {
     axios.get(route("getPersonTypes")).then((response) => {
         person_types.value = response.data;
     });
+
+    axios.get(route("getDepartments")).then((response) => {
+        departments.value = response.data;
+    });
+};
+
+const getProvinces = () => {
+    provinces.value = [];
+    districts.value = [];
+    form.distrito.provincia_id = null;
+    form.ubigeo = null;
+
+    axios
+        .get(route("getProvinces", form.distrito.provincia.departamento_id))
+        .then((response) => {
+            provinces.value = response.data;
+        });
+};
+
+const getDistricts = () => {
+    districts.value = [];
+    form.ubigeo = null;
+
+    axios
+        .get(route("getDistricts", form.distrito.provincia_id))
+        .then((response) => {
+            districts.value = response.data;
+        });
 };
 
 const closeModal = () => {
@@ -65,9 +105,13 @@ const closeModal = () => {
 const open = (idPerson = null) => {
     id.value = idPerson;
     form.clearErrors();
+    provinces.value = [];
+    districts.value = [];
     if (id.value) {
         getPerson();
+        isOpenAdvancedOptions.value = true;
     } else {
+        isOpenAdvancedOptions.value = false;
         modal.value = true;
     }
 };
@@ -76,7 +120,34 @@ const getPerson = () => {
     axios.get(route("people.show", id.value)).then((response) => {
         Object.assign(form, response.data);
         modal.value = true;
+        getUbigeo();
     });
+};
+
+const getUbigeo = () => {
+    if (form.distrito) {
+        axios
+            .get(route("getProvinces", form.distrito.provincia.departamento_id))
+            .then((response) => {
+                provinces.value = response.data;
+            });
+
+        axios
+            .get(route("getDistricts", form.distrito.provincia_id))
+            .then((response) => {
+                districts.value = response.data;
+            });
+    } else {
+        form.distrito = {
+            nombre: null,
+            provincia: {
+                nombre: null,
+                departamento: {
+                    nombre: null,
+                },
+            },
+        };
+    }
 };
 
 const save = () => {
@@ -268,7 +339,10 @@ defineExpose({
                 </div>
                 <div class="w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
-                        <InputLabel for="telefono" value="Teléfono"></InputLabel>
+                        <InputLabel
+                            for="telefono"
+                            value="Teléfono"
+                        ></InputLabel>
                         <div class="sm:w-3/4">
                             <TextInput
                                 id="telefono"
@@ -285,7 +359,10 @@ defineExpose({
                 </div>
                 <div class="w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
-                        <InputLabel for="correo" value="Correo electrónico"></InputLabel>
+                        <InputLabel
+                            for="correo"
+                            value="Correo electrónico"
+                        ></InputLabel>
                         <div class="sm:w-3/4">
                             <TextInput
                                 id="correo"
@@ -302,7 +379,10 @@ defineExpose({
                 </div>
                 <div class="w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
-                        <InputLabel for="rating" value="Calificación"></InputLabel>
+                        <InputLabel
+                            for="rating"
+                            value="Calificación"
+                        ></InputLabel>
                         <div class="sm:w-3/4">
                             <SelectInput
                                 id="rating"
@@ -316,6 +396,64 @@ defineExpose({
                                 :message="form.errors.rating"
                                 class="mt-2"
                             ></InputError>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full p-3 mt-1">
+                    <div class="sm:flex items-center justify-between">
+                        <InputLabel
+                            for="department"
+                            value="Departamento"
+                        ></InputLabel>
+                        <div class="sm:w-3/4">
+                            <SelectInput
+                                id="department"
+                                :options="departments"
+                                name="nombre"
+                                v-model="
+                                    form.distrito.provincia.departamento_id
+                                "
+                                @update:modelValue="getProvinces"
+                                type="text"
+                                class="w-full"
+                            ></SelectInput>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full p-3 mt-1">
+                    <div class="sm:flex items-center justify-between">
+                        <InputLabel
+                            for="province"
+                            value="Provincia"
+                        ></InputLabel>
+                        <div class="sm:w-3/4">
+                            <SelectInput
+                                id="province"
+                                :options="provinces"
+                                name="nombre"
+                                v-model="form.distrito.provincia_id"
+                                @update:modelValue="getDistricts"
+                                type="text"
+                                class="w-full"
+                            ></SelectInput>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full p-3 mt-1">
+                    <div class="sm:flex items-center justify-between">
+                        <InputLabel
+                            for="district"
+                            value="Distrito"
+                        ></InputLabel>
+                        <div class="sm:w-3/4">
+                            <SelectInput
+                                id="district"
+                                :options="districts"
+                                name="nombre"
+                                v-model="form.ubigeo"
+                                type="text"
+                                class="w-full"
+                            ></SelectInput>
                         </div>
                     </div>
                 </div>

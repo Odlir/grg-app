@@ -24,12 +24,13 @@ return new class extends Migration
             $table->string('telefono')->nullable();
             $table->string('correo')->nullable();
             $table->string('ubicacion')->nullable();
-            $table->string('ubigeo')->nullable();
+            $table->string('ubigeo', 6)->nullable();
             $table->timestamps();
             $table->char('estado')->comment('0-Inactivo/1-Activo')->default(1);
             $table->softDeletes();
             $table->foreign('doc_types')->references('id')->on('doc_types');
             $table->foreign('tipo_persona')->references('id')->on('person_types');
+            $table->foreign('ubigeo')->references('id')->on('distritos');
         });
     }
 
