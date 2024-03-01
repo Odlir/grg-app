@@ -7,8 +7,9 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import { useForm } from "@inertiajs/vue3";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import Swal from "sweetalert2";
+import Map from "@/Components/Map.vue";
 
 const modal = ref(false);
 const doc_types = ref(null);
@@ -17,6 +18,7 @@ const departments = ref([]);
 const provinces = ref([]);
 const districts = ref([]);
 const id = ref("");
+const markerLocation = ref("");
 const isOpenAdvancedOptions = ref(false);
 const genders = ref([
     { id: "masculino", descripcion: "Masculino" },
@@ -52,7 +54,7 @@ const form = useForm({
     telefono: "",
     correo: "",
     ubicacion: "",
-    ubigeo: ""
+    ubigeo: "",
 });
 
 onMounted(() => {
@@ -107,12 +109,12 @@ const open = (idPerson = null) => {
     form.clearErrors();
     provinces.value = [];
     districts.value = [];
+    markerLocation.value = null;
     if (id.value) {
         getPerson();
-        isOpenAdvancedOptions.value = true;
     } else {
-        isOpenAdvancedOptions.value = false;
         modal.value = true;
+        isOpenAdvancedOptions.value = false;
     }
 };
 
@@ -121,6 +123,11 @@ const getPerson = () => {
         Object.assign(form, response.data);
         modal.value = true;
         getUbigeo();
+        isOpenAdvancedOptions.value = true;
+        if(form.ubicacion) {
+            const latlng = form.ubicacion.split(",");
+            markerLocation.value = { lat: latlng[0], lng: latlng[1] };
+        }
     });
 };
 
@@ -164,6 +171,12 @@ const save = () => {
                 ok("Datos creados correctamente.");
             },
         });
+    }
+};
+
+const onClickMarker = (latlng) => {
+    if (latlng) {
+        form.ubicacion = latlng.lat + "," + latlng.lng;
     }
 };
 
@@ -456,6 +469,16 @@ defineExpose({
                             ></SelectInput>
                         </div>
                     </div>
+                </div>
+                <div class="w-full p-3 mt-1">
+                    <InputLabel value="Seleccione la ubicación"></InputLabel>
+                    <Map
+                        class="mt-3"
+                        :centerPosition="[-12.0453, -77.0311]"
+                        :zoom="12"
+                        :marker="markerLocation"
+                        @onClickMarker="onClickMarker"
+                    ></Map>
                 </div>
             </template>
         </div>
