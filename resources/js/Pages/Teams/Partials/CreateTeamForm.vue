@@ -1,5 +1,5 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import {useForm} from '@inertiajs/vue3';
 import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -21,19 +21,20 @@ const createTeam = () => {
 <template>
     <FormSection @submitted="createTeam">
         <template #title>
-            Team Details
+            Detalles del equipo
         </template>
 
         <template #description>
-            Create a new team to collaborate with others on projects.
+            Crea un nuevo equipo para colaborar con otros en proyectos.
         </template>
 
         <template #form>
             <div class="col-span-6">
-                <InputLabel value="Team Owner" />
+                <InputLabel value="Dueño del Equipo"/>
 
                 <div class="flex items-center mt-2">
-                    <img class="object-cover w-12 h-12 rounded-full" :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name">
+                    <img class="object-cover w-12 h-12 rounded-full" :src="$page.props.auth.user.profile_photo_url"
+                         :alt="$page.props.auth.user.name">
 
                     <div class="ms-4 leading-tight">
                         <div class="text-gray-900 dark:text-white">{{ $page.props.auth.user.name }}</div>
@@ -45,7 +46,7 @@ const createTeam = () => {
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="name" value="Team Name" />
+                <InputLabel for="name" value="Nombre de Equipo"/>
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -53,13 +54,13 @@ const createTeam = () => {
                     class="block w-full mt-1"
                     autofocus
                 />
-                <InputError :message="form.errors.name" class="mt-2" />
+                <InputError :message="form.errors.name" class="mt-2"/>
             </div>
         </template>
 
         <template #actions>
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Create
+                Crear
             </PrimaryButton>
         </template>
     </FormSection>

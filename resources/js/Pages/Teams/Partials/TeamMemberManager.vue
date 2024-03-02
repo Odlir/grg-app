@@ -100,18 +100,16 @@ const displayableRole = (role) => {
             <!-- Add Team Member -->
             <FormSection @submitted="addTeamMember">
                 <template #title>
-                    Add Team Member
+                    Agregar miembro al equipo
                 </template>
 
                 <template #description>
-                    Add a new team member to your team, allowing them to collaborate with you.
-                </template>
+                    Agregue un nuevo miembro a su equipo, para permitirle colaborar con usted. </template>
 
                 <template #form>
                     <div class="col-span-6">
                         <div class="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                            Please provide the email address of the person you would like to add to this team.
-                        </div>
+                            Proporcione la dirección de correo electrónico de la persona que desea agregar a este equipo. </div>
                     </div>
 
                     <!-- Member Email -->
@@ -164,11 +162,11 @@ const displayableRole = (role) => {
 
                 <template #actions>
                     <ActionMessage :on="addTeamMemberForm.recentlySuccessful" class="me-3">
-                        Added.
+                        Agregado.
                     </ActionMessage>
 
                     <PrimaryButton :class="{ 'opacity-25': addTeamMemberForm.processing }" :disabled="addTeamMemberForm.processing">
-                        Add
+                        Agregar
                     </PrimaryButton>
                 </template>
             </FormSection>
