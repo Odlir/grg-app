@@ -11,7 +11,7 @@
 }
 
 aside > div:first-child {
-    @apply rounded-lg bg-blue-300;
+    @apply rounded-lg;
 }
 
 thead {
@@ -20,4 +20,10 @@ thead {
 
 .center-items {
     @apply text-center !important;
+}
+
+@media (prefers-color-scheme: light) {
+    aside > div:first-child {
+        @apply bg-blue-300;
+    }
 }

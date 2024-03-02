@@ -1,5 +1,6 @@
 <script setup>
 import { FwbSidebar, FwbSidebarItem } from 'flowbite-vue'
+import { Link } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -17,7 +18,9 @@ import { FwbSidebar, FwbSidebarItem } from 'flowbite-vue'
                     <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                 </svg>
             </template>
-            <template #default>Dashboard</template>
+            <Link :href="route('dashboard')">
+                <template #default>Dashboard</template>
+            </Link>
         </fwb-sidebar-item>
         <fwb-sidebar-item>
             <template #icon>
@@ -33,7 +36,9 @@ import { FwbSidebar, FwbSidebarItem } from 'flowbite-vue'
                     />
                 </svg>
             </template>
-            <template #default>Clientes</template>
+            <Link :href="route('people.index')">
+                <template #default>Clientes</template>
+            </Link>
         </fwb-sidebar-item>
         <fwb-sidebar-item>
             <template #icon>

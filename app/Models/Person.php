@@ -12,7 +12,8 @@ class Person extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['doc_types','nro_documento','nombre_legal', 'direccion',
-        'tipo_persona','alias','genero', 'telefono', 'correo','ubicacion','ubigeo'];
+        'tipo_persona','alias','genero', 'telefono', 'correo','ubicacion','ubigeo',
+        'rating'];
 
     protected $dates = ['deleted_at'];
 
@@ -24,5 +25,10 @@ class Person extends Model
     public function persontype(): HasOne
     {
         return $this->hasOne(personType::class, 'id');
+    }
+
+    public function distrito()
+    {
+        return $this->belongsTo(Distrito::class, 'ubigeo', 'id');
     }
 }
