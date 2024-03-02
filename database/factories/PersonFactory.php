@@ -28,7 +28,11 @@ class PersonFactory extends Factory
             'tipo_persona' => personType::all()->random()->id,
             'alias' => fake()->name(),
             'genero' => fake()->randomElement(['masculino', 'femenino']),
+
+            'calificacion' => fake()->randomElement(['1', '2', '3', '4', '5']),
+
             'rating' => fake()->randomElement(['1','2','3','4','5']),
+
             'telefono' => fake()->numerify('###-###-###'),
             'correo' => fake()->email(),
             'ubicacion' => Str::random(10),

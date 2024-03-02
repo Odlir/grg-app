@@ -107,11 +107,11 @@ const disableTwoFactorAuthentication = () => {
 <template>
     <ActionSection>
         <template #title>
-            Two Factor Authentication
+            Doble factor de autenticación
         </template>
 
         <template #description>
-            Agrega seguridad adicional a tu cuenta usando doble factor de autenticacion.
+            Agrega seguridad adicional a tu cuenta usando doble factor de autenticación.
         </template>
 
         <template #content>
@@ -149,7 +149,7 @@ const disableTwoFactorAuthentication = () => {
 
                     <div v-if="setupKey" class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
                         <p class="font-semibold">
-                            Setup Key: <span v-html="setupKey"></span>
+                            Clave de configuración: <span v-html="setupKey"></span>
                         </p>
                     </div>
 
