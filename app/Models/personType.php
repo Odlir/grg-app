@@ -10,6 +10,7 @@ class personType extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = "person_types";
     protected $fillable = ['descripcion','estado'];
 
     /**

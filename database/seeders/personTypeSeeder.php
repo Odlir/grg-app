@@ -14,9 +14,9 @@ class personTypeSeeder extends Seeder
     public function run(): void
     {
         $tiposPersona = [
-            ['descripcion'=>'cliente'],
-            ['descripcion'=>'proveedor'],
-            ['descripcion'=>'ambos'],
+            ['descripcion'=>'Cliente'],
+            ['descripcion'=>'Proveedor'],
+            ['descripcion'=>'Ambos'],
         ];
 
         personType::insert($tiposPersona);

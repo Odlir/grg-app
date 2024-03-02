@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PersonController;
+use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\UbigeoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,11 +36,10 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/people', [PersonController::class, 'index'])->name('person.index');
-    Route::get('/people/create', [PersonController::class, 'create'])->name('person.create');
-    Route::post('/people', [PersonController::class, 'store'])->name('person.store');
-    Route::get('/people/{person}/edit', [PersonController::class, 'show'])->name('person.show');
-    Route::post('/people/update', [PersonController::class, 'update'])->name('person.update');
-    Route::get('/people/{person}/delete', [PersonController::class, 'destroy'])->name('person.destroy');
-
+    Route::apiResource('people', PersonController::class);
+    Route::get('/doc_types', [CatalogueController::class, 'getDocTypes'])->name('getDocTypes');
+    Route::get('/person_types', [CatalogueController::class, 'getPersonTypes'])->name('getPersonTypes');
+    Route::get('/departments', [UbigeoController::class, 'getDepartments'])->name('getDepartments');
+    Route::get('/provinces/{id}', [UbigeoController::class, 'getProvinceByDepartmentId'])->name('getProvinces');
+    Route::get('/districts/{id}', [UbigeoController::class, 'getDistrictByProvinceId'])->name('getDistricts');
 });
