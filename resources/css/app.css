@@ -1,6 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 [x-cloak] {
     display: none;
@@ -8,10 +5,6 @@
 
 .top-auto {
     top: auto;
-}
-
-aside > div:first-child {
-    @apply rounded-lg bg-blue-300;
 }
 
 thead {
