@@ -17,9 +17,6 @@ const props = defineProps({
     people: Object,
 });
 
-const newData = props.people.data;
-
-
 const headers = ['Razon Social', 'Documento', 'Tipo', 'Calificacion', 'Telefono'];
 const cols = ['nombre_legal', 'docdesc', 'perdesc', 'rating', 'telefono'];
 const modalRegEditRef = ref(null);
@@ -51,9 +48,7 @@ const openModal = (form = null) =>{
                     <Rating :size="sm" :rating="item.calificacion" />
                 </template>
             </Table>
-            <Pagination :pagination="people.meta" />
-
-
+            <Pagination :links="people.links" />
         </div>
     </AppLayout>
     <CreateEditModal ref="modalRegEditRef"></CreateEditModal>
