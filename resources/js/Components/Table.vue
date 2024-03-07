@@ -39,7 +39,7 @@ const props = defineProps({
                 </fwb-table-cell>
                 <fwb-table-cell class="center-items">
                     <fwb-a href="#">
-                        <EditIcon />
+                        <EditIcon @click="$emit('onClickEdit', row.id);"/>
                     </fwb-a>
                 </fwb-table-cell>
             </fwb-table-row>

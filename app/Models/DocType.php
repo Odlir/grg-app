@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DocType extends Model
 {
     use HasFactory, SoftDeletes;
-
+    protected $table = "doc_types";
     protected $fillable = ['descripcion','estado'];
 
 }
