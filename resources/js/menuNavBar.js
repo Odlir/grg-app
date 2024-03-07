@@ -15,22 +15,22 @@ import {
 export default [
   {
     icon: mdiMenu,
-    label: 'Sample menu',
+    label: 'Accesos Directos',
     menu: [
       {
         icon: mdiClockOutline,
-        label: 'Item One'
+        label: 'Reportes'
       },
       {
         icon: mdiCloud,
-        label: 'Item Two'
+        label: 'Facturas'
       },
       {
         isDivider: true
       },
       {
         icon: mdiCrop,
-        label: 'Item Last'
+        label: 'Configuracion'
       }
     ]
   },
@@ -39,16 +39,16 @@ export default [
     menu: [
       {
         icon: mdiAccount,
-        label: 'My Profile',
+        label: 'Mi Perfil',
         to: '/profile'
       },
       {
         icon: mdiCogOutline,
-        label: 'Settings'
+        label: 'Configuracion'
       },
       {
         icon: mdiEmail,
-        label: 'Messages'
+        label: 'Mensajes'
       },
       {
         isDivider: true
@@ -66,7 +66,7 @@ export default [
     isDesktopNoLabel: true,
     isToggleLightDark: true
   },
-  {
+  /*{
     icon: mdiGithub,
     label: 'GitHub',
     isDesktopNoLabel: true,
@@ -79,7 +79,7 @@ export default [
     isDesktopNoLabel: true,
     href: 'https://github.com/justboil/admin-one-react-tailwind',
     target: '_blank'
-  },
+  },*/
   {
     icon: mdiLogout,
     label: 'Log out',

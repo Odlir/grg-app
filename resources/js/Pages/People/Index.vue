@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { Head, Link } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Pagination from "@/Components/Pagination.vue";
