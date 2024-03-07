@@ -10,20 +10,10 @@
     top: auto;
 }
 
-aside > div:first-child {
-    @apply rounded-lg;
-}
-
 thead {
     @apply bg-amber-300 !important;
 }
 
 .center-items {
     @apply text-center !important;
-}
-
-@media (prefers-color-scheme: light) {
-    aside > div:first-child {
-        @apply bg-blue-300;
-    }
 }

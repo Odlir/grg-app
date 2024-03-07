@@ -15,9 +15,6 @@ const props = defineProps({
     headers: Array,
     cols: Array,
 })
-
-console.log('odlir333', props.data);
-
 </script>
 <template>
     <fwb-table hoverable>

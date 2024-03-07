@@ -1,13 +1,9 @@
-<script lang="ts" setup>
-
+<script setup>
 import { Head, Link } from "@inertiajs/vue3";
-
-
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Pagination from "@/Components/Pagination.vue";
 import Table from "@/Components/Table.vue";
 import Rating from "@/Components/Rating.vue";
-
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import CreateEditModal from "@/Pages/People/CreateEdit.vue";
 import { ref } from 'vue';
