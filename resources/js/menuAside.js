@@ -20,7 +20,7 @@ export default [
         label: 'Dashboard'
     },
     {
-        route: 'person.index',
+        route: 'people.index',
         label: 'Clientes',
         icon: mdiTable
     },
