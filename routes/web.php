@@ -37,6 +37,7 @@ Route::middleware([
     })->name('dashboard');
 
     Route::apiResource('people', PersonController::class);
+
     Route::get('/doc_types', [CatalogueController::class, 'getDocTypes'])->name('getDocTypes');
     Route::get('/person_types', [CatalogueController::class, 'getPersonTypes'])->name('getPersonTypes');
     Route::get('/departments', [UbigeoController::class, 'getDepartments'])->name('getDepartments');
