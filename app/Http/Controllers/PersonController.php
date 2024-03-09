@@ -60,6 +60,9 @@ class PersonController extends Controller
      */
     public function destroy(Person $person)
     {
-        //
+        $person->estado = '0';
+        $person->save();
+        $person->delete();
+        return redirect('people');
     }
 }

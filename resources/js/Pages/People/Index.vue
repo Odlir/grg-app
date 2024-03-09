@@ -4,26 +4,54 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import Pagination from "@/Components/Pagination.vue";
 import Table from "@/Components/Table.vue";
 import Rating from "@/Components/Rating.vue";
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 import CreateEditModal from "@/Pages/People/CreateEdit.vue";
-import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue';
-import SectionMain from '@/components/SectionMain.vue';
-import { ref } from 'vue';
-
+import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
+import SectionMain from "@/components/SectionMain.vue";
+import { ref } from "vue";
+import { useForm } from "@inertiajs/vue3";
+import Swal from "sweetalert2";
 
 const props = defineProps({
     people: Object,
 });
 
-const headers = ['Razon Social', 'Documento', 'Tipo', 'Calificacion', 'Telefono'];
-const cols = ['nombre_legal', 'docdesc', 'perdesc', 'rating', 'telefono'];
+const headers = [
+    "Razon Social",
+    "Documento",
+    "Tipo",
+    "Calificacion",
+    "Telefono",
+];
+const cols = ["nombre_legal", "docdesc", "perdesc", "rating", "telefono"];
 const modalRegEditRef = ref(null);
 
-const openModal = (form = null) =>{
+const form = useForm({
+    id: "",
+});
+
+const openModal = (form = null) => {
     modalRegEditRef.value.open(form);
-}
+};
 
-
+const deleteRow = (id) => {
+    const alerta = Swal.mixin({
+        buttonsStyling: true,
+    });
+    alerta
+        .fire({
+            title: "Desea eliminar este registro?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: '<i class="fa-solid fa-check"></i> Si, seguro',
+            cancelButtonText: '<i class="fa-solid fa-ban"></i> Cancelar',
+        })
+        .then((result) => {
+            if (result.isConfirmed) {
+                form.delete(route("people.destroy", id));
+            }
+        });
+};
 </script>
 
 <template>
@@ -35,9 +63,13 @@ const openModal = (form = null) =>{
                 </PrimaryButton>
             </div>
             <div class="pt-3">
-
-                <Table :data="people.data" :headers="headers" :cols="cols" @onClickEdit="openModal">
-
+                <Table
+                    :data="people.data"
+                    :headers="headers"
+                    :cols="cols"
+                    @onClickEdit="openModal"
+                    @onClickDelete="deleteRow"
+                >
                     <template #cell(docdesc)="{ value, item }">
                         <strong>{{ item.docdesc.toUpperCase() }}</strong>
                         {{ item.nro_documento }}
@@ -54,6 +86,4 @@ const openModal = (form = null) =>{
     </LayoutAuthenticated>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

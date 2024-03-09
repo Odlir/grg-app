@@ -7,14 +7,14 @@ import {
     FwbTableHead,
     FwbTableHeadCell,
     FwbTableRow,
-} from 'flowbite-vue';
-import EditIcon from "@/Components/EditIcon.vue";
+} from "flowbite-vue";
+import TableActions from "@/Components/TableActions.vue";
 
 const props = defineProps({
     data: Array,
     headers: Array,
     cols: Array,
-})
+});
 </script>
 <template>
     <fwb-table hoverable>
@@ -29,17 +29,16 @@ const props = defineProps({
         <fwb-table-body>
             <fwb-table-row v-for="row in data" :key="row.id">
                 <fwb-table-cell v-for="(col, ind) in cols" :key="ind">
-                    <slot
-                        :name="`cell(${col})`"
-                        :value="row[col]"
-                        :item="row"
-                    >
+                    <slot :name="`cell(${col})`" :value="row[col]" :item="row">
                         {{ row[col] }}
                     </slot>
                 </fwb-table-cell>
                 <fwb-table-cell class="center-items">
                     <fwb-a href="#">
-                        <EditIcon @click="$emit('onClickEdit', row.id);"/>
+                        <TableActions
+                            @onClickEdit="$emit('onClickEdit', row.id)"
+                            @onClickDelete="$emit('onClickDelete', row.id)"
+                        />
                     </fwb-a>
                 </fwb-table-cell>
             </fwb-table-row>
@@ -47,6 +46,4 @@ const props = defineProps({
     </fwb-table>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
