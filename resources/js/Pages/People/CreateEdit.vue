@@ -6,6 +6,7 @@ import InputError from "@/Components/InputError.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SelectInput from "@/Components/SelectInput.vue";
+import MultiSelect from "@/Components/MultiSelect.vue";
 import { useForm } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import Swal from "sweetalert2";
@@ -38,7 +39,6 @@ const form = useForm({
     nro_documento: "",
     nombre_legal: "",
     direccion: "",
-    tipo_persona: 1,
     alias: "",
     genero: "",
     rating: "",
@@ -55,6 +55,7 @@ const form = useForm({
     correo: "",
     ubicacion: "",
     ubigeo: "",
+    persontype: null
 });
 
 onMounted(() => {
@@ -127,6 +128,9 @@ const getPerson = () => {
         if(form.ubicacion) {
             const latlng = form.ubicacion.split(",");
             markerLocation.value = { lat: latlng[0], lng: latlng[1] };
+        }
+        if(form.persontype) {
+            form.persontype = form.persontype.map(item => item.id);
         }
     });
 };
@@ -285,19 +289,12 @@ defineExpose({
             </div>
             <div class="w-full p-3 mt-1">
                 <div class="sm:flex w-full items-center justify-between">
-                    <InputLabel for="tipo_persona" value="Tipo"></InputLabel>
+                    <InputLabel for="persontype" value="Tipo"></InputLabel>
                     <div class="sm:w-3/4">
-                        <SelectInput
-                            id="tipo_persona"
-                            :options="person_types"
-                            name="descripcion"
-                            v-model="form.tipo_persona"
-                            type="text"
-                            class="w-full"
-                        ></SelectInput>
+                        <MultiSelect class="w-full" :options="person_types" v-model:model-value="form.persontype"></MultiSelect>
 
                         <InputError
-                            :message="form.errors.tipo_persona"
+                            :message="form.errors.persontype"
                             class="mt-2"
                         ></InputError>
                     </div>
@@ -306,7 +303,7 @@ defineExpose({
         </div>
         <div class="flex flex-wrap items-center mt-6">
             <h5
-                class="ml-3 text-white cursor-pointer hover:underline w-full"
+                class="ml-3  dark:text-white cursor-pointer hover:underline w-full"
                 @click="isOpenAdvancedOptions = !isOpenAdvancedOptions"
             >
                 {{ isOpenAdvancedOptions ? "Ocultar" : "Ver" }} opciones

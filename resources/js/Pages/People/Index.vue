@@ -75,6 +75,12 @@ const deleteRow = (id) => {
                         {{ item.nro_documento }}
                     </template>
 
+                    <template #cell(perdesc)="{ value, item }">
+                        {{ item.persontype.map(function(item) {
+                            return item.descripcion;
+                        }).join(", ") }}
+                    </template>
+
                     <template #cell(calificacion)="{ value, item }">
                         <Rating :size="sm" :rating="item.calificacion" />
                     </template>

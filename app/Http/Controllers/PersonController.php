@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PersonRequest;
 use App\Http\Resources\PersonResource;
 use App\Models\Person;
+use App\Models\PersonTypeDetail;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -15,9 +16,9 @@ class PersonController extends Controller
      */
     public function index()
     {
-        $people = Person::select(['people.*', 'doc_types.descripcion as docdesc', 'person_types.descripcion as perdesc'])
+        $people = Person::select(['people.*', 'doc_types.descripcion as docdesc'])
             ->join('doc_types', 'people.doc_types', '=', 'doc_types.id')
-            ->join('person_types', 'people.tipo_persona', '=', 'person_types.id')
+            ->with('persontype')
             ->latest('people.id')
             ->paginate(10);
 
@@ -33,6 +34,12 @@ class PersonController extends Controller
     {
         $data = new Person($request->input());
         $data->save();
+
+        foreach ($request->input()['persontype'] as $value) {
+            $detalle_tipo_persona = new PersonTypeDetail(['person_id' => $data->id, 'person_type_id' => $value]);
+            $detalle_tipo_persona->save();
+        }
+
         return redirect('people');
     }
 
@@ -42,6 +49,7 @@ class PersonController extends Controller
     public function show(Person $person)
     {
         $person->load('distrito.provincia.departamento');
+        $person->load('persontype');
 
         return $person;
     }

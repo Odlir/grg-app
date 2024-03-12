@@ -25,7 +25,6 @@ class PersonFactory extends Factory
             'nro_documento' => fake()->numerify('#########'),
             'nombre_legal' => fake()->name(),
             'direccion' => fake()->address(),
-            'tipo_persona' => personType::all()->random()->id,
             'alias' => fake()->name(),
             'genero' => fake()->randomElement(['masculino', 'femenino']),
 
@@ -35,8 +34,17 @@ class PersonFactory extends Factory
 
             'telefono' => fake()->numerify('###-###-###'),
             'correo' => fake()->email(),
-            'ubicacion' => Str::random(10),
+            'ubicacion' => $this->generateCoordinates(),
             'ubigeo' => Distrito::all()->random()->id,
         ];
+    }
+
+    private function generateCoordinates()
+    {
+        $latitude = mt_rand(-90 * 1000000, 90 * 1000000) / 1000000;
+
+        $longitude = mt_rand(-180 * 1000000, 180 * 1000000) / 1000000;
+
+        return $latitude . ',' . $longitude;
     }
 }
