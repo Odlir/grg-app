@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             personTypeSeeder::class,
             UbigeoSeeder::class,
             PersonSeeder::class,
+            establishmentSeeder::class,
+           storeSeeder::class,
         ]);
     }
 }
