@@ -16,11 +16,26 @@ class PersonController extends Controller
      */
     public function index()
     {
-        $people = Person::select(['people.*', 'doc_types.descripcion as docdesc'])
-            ->join('doc_types', 'people.doc_types', '=', 'doc_types.id')
-            ->with('persontype')
-            ->latest('people.id')
-            ->paginate(10);
+        $query = Person::select(['people.*', 'doc_types.descripcion as docdesc'])
+        ->join('doc_types', 'people.doc_types', '=', 'doc_types.id')
+        ->with('persontype')
+        ->latest('people.id');
+
+        if(request()->input('nombre_legal')) {
+            $query->where('nombre_legal', 'LIKE', '%' . request()->input('nombre_legal') . '%');
+        }
+
+        if(request()->input('docdesc')) {
+            $query->where('nro_documento', 'LIKE', '%' . request()->input('docdesc') . '%');
+        }
+
+        if(request()->input('perdesc')) {
+            $query->whereHas('persontype', function ($q){
+                $q->where("descripcion", "LIKE", "%".request()->input('perdesc')."%");
+            });
+        }
+
+        $people = $query->paginate(10)->withQueryString();
 
         return Inertia::render('People/Index', [
             'people' => $people

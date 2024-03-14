@@ -9,26 +9,42 @@ import CreateEditModal from "@/Pages/People/CreateEdit.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionMain from "@/components/SectionMain.vue";
 import { ref } from "vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, router } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
 
 const props = defineProps({
     people: Object,
 });
 
-const headers = [
-    "Razon Social",
-    "Documento",
-    "Tipo",
-    "Calificacion",
-    "Telefono",
+const cols = [
+    { headerName: "Razón Social", colName: "nombre_legal", isSearchable: true },
+    { headerName: "Documento", colName: "docdesc", isSearchable: true },
+    { headerName: "Tipo", colName: "perdesc", isSearchable: true },
+    { headerName: "Calificación", colName: "rating", isSearchable: false },
+    { headerName: "Teléfono", colName: "telefono", isSearchable: false },
 ];
-const cols = ["nombre_legal", "docdesc", "perdesc", "rating", "telefono"];
+
 const modalRegEditRef = ref(null);
 
 const form = useForm({
     id: "",
 });
+
+const onChangeFilters = (filters) => {
+    const queryParams = {};
+
+    filters.forEach(filter => {
+        queryParams[filter.colName] =filter.value;
+    });
+
+    router.get(
+        '/people',
+        queryParams,
+        {
+            preserveState: true
+        }
+    );
+}
 
 const openModal = (form = null) => {
     modalRegEditRef.value.open(form);
@@ -57,7 +73,7 @@ const deleteRow = (id) => {
 <template>
     <LayoutAuthenticated>
         <SectionMain>
-            <div class="mt-3 mb-3">
+            <div class="mt-3 mb-3 text-right">
                 <PrimaryButton @click="openModal()">
                     <i class="fa-solid fa-plus-circle"></i> Registrar
                 </PrimaryButton>
@@ -65,10 +81,10 @@ const deleteRow = (id) => {
             <div class="pt-3">
                 <Table
                     :data="people.data"
-                    :headers="headers"
                     :cols="cols"
                     @onClickEdit="openModal"
                     @onClickDelete="deleteRow"
+                    @update:filters="onChangeFilters"
                 >
                     <template #cell(docdesc)="{ value, item }">
                         <strong>{{ item.docdesc.toUpperCase() }}</strong>
@@ -76,9 +92,13 @@ const deleteRow = (id) => {
                     </template>
 
                     <template #cell(perdesc)="{ value, item }">
-                        {{ item.persontype.map(function(item) {
-                            return item.descripcion;
-                        }).join(", ") }}
+                        {{
+                            item.persontype
+                                .map(function (item) {
+                                    return item.descripcion;
+                                })
+                                .join(", ")
+                        }}
                     </template>
 
                     <template #cell(calificacion)="{ value, item }">
