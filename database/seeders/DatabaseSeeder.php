@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             UbigeoSeeder::class,
             PersonSeeder::class,
             establishmentSeeder::class,
-           storeSeeder::class,
+            warehouseSeeder::class,
+            unitOfMeasureSeeder::class,
         ]);
     }
 }

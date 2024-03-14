@@ -5,22 +5,23 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Helpers\defaultColumnsHelper;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('store', function (Blueprint $table) {
+        Schema::create('warehouse', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->string('description')->nullable();
-            $table->string('departamento_id',2);
+            $table->unsignedBigInteger('establishment_id');
+            $table->foreign('establishment_id')->references('id')->on('establishment');
+            $table->string('departamento_id', 2);
             $table->foreign('departamento_id')->references('id')->on('departamentos');
-            $table->string('provincia_id',4);
+            $table->string('provincia_id', 4);
             $table->foreign('provincia_id')->references('id')->on('provincias');
-            $table->string('distrito_id',6);
+            $table->string('distrito_id', 6);
             $table->foreign('distrito_id')->references('id')->on('distritos');
             defaultColumnsHelper::defaultColumns($table);
         });
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('store');
+        Schema::dropIfExists('warehouse');
     }
 };
