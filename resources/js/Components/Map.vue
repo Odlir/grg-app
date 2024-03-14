@@ -40,6 +40,7 @@ defineExpose({
             ref="map"
             :zoom="zoom"
             :center="centerPositionRef"
+            :use-global-leaflet="false"
             @click="addMarker($event)"
         >
             <l-tile-layer

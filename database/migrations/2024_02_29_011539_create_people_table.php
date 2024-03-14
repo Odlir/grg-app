@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('nro_documento');
             $table->string('nombre_legal');
             $table->string('direccion');
-            $table->unsignedBigInteger('tipo_persona');
             $table->string('alias')->unique()->nullable();
             $table->enum('genero', ['masculino', 'femenino'])->nullable();
             $table->enum('rating',['1','2','3','4','5'])->nullable();
@@ -31,7 +30,6 @@ return new class extends Migration
             $table->char('estado')->comment('0-Inactivo/1-Activo')->default(1);
             $table->softDeletes();
             $table->foreign('doc_types')->references('id')->on('doc_types');
-            $table->foreign('tipo_persona')->references('id')->on('person_types');
             $table->foreign('ubigeo')->references('id')->on('distritos');
         });
     }
