@@ -27,11 +27,7 @@ class PersonFactory extends Factory
             'direccion' => fake()->address(),
             'alias' => fake()->name(),
             'genero' => fake()->randomElement(['masculino', 'femenino']),
-
-            'calificacion' => fake()->randomElement(['1', '2', '3', '4', '5']),
-
             'rating' => fake()->randomElement(['1','2','3','4','5']),
-
             'telefono' => fake()->numerify('###-###-###'),
             'correo' => fake()->email(),
             'ubicacion' => $this->generateCoordinates(),
