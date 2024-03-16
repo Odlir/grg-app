@@ -101,8 +101,8 @@ const deleteRow = (id) => {
                         }}
                     </template>
 
-                    <template #cell(calificacion)="{ value, item }">
-                        <Rating :size="sm" :rating="item.calificacion" />
+                    <template #cell(rating)="{ value, item }">
+                        <Rating :size="sm" :rating="item.rating" />
                     </template>
                 </Table>
                 <Pagination :links="people.links" />
