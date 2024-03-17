@@ -72,7 +72,7 @@ class PersonController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Person $person)
+    public function update(PersonRequest $request, Person $person)
     {
         $person->update($request->input());
         return redirect('people');

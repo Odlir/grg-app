@@ -25,7 +25,7 @@ export default [
         icon: mdiTable
     },
     {
-        route: 'dashboard',
+        route: 'products.index',
         label: 'Productos',
         icon: mdiSquareEditOutline
     },
