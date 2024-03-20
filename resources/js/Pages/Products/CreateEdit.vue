@@ -6,6 +6,7 @@ import InputError from "@/Components/InputError.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SelectInput from "@/Components/SelectInput.vue";
+import FileInput from '@/components/FileInput.vue';
 import FormControl from '@/components/FormControl.vue';
 import { useForm } from "@inertiajs/vue3";
 import { ref, onMounted } from "vue";
@@ -31,7 +32,7 @@ const form = useForm({
     unit_of_measure_id: '',
     warehouse_id: '',
     type: '',
-    image: '',
+    images: '',
     minimum_stock: '',
     initial_stock: 10,
     category_id: ''
@@ -262,14 +263,19 @@ defineExpose({
                 <div class="w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
                         <InputLabel
-                            for="image"
+                            for="images"
                             value="Imagen"
                         ></InputLabel>
                         <div class="sm:w-3/4">
-                            <InputError
-                                :message="form.errors.image"
-                                class="mt-2"
-                            ></InputError>
+                            <FileInput v-model="form.images" onlyImages/>
+                            <template v-for="(errorMessage, key) in form.errors">
+                                <InputError
+                                  v-if="key.startsWith('images.')"
+                                  :key="key"
+                                  :message="errorMessage"
+                                  class="mt-2"
+                                ></InputError>
+                            </template>
                         </div>
                     </div>
                 </div>

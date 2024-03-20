@@ -20,7 +20,8 @@ class ProductRequest extends FormRequest
             'type' => 'required|in:product,service',
             'minimum_stock' => 'numeric|nullable',
             'initial_stock' => 'required|numeric',
-            'category_id' => 'required'
+            'category_id' => 'required',
+            'images.*' => 'mimes:jpeg,png,jpg,gif,svg',
         ];
     }
 
@@ -39,7 +40,8 @@ class ProductRequest extends FormRequest
             'minimum_stock.numeric' => 'El stock mínimo debe ser un número.',
             'initial_stock.required' => 'El stock inicial es requerido.',
             'initial_stock.numeric' => 'El stock inicial debe ser un número.',
-            'category_id.required' => 'La categoría es requerida.'
+            'category_id.required' => 'La categoría es requerida.',
+            'images.*.mimes' => 'El archivo debe ser de tipo JPG, JPEG, PNG, GIF o SVG'
         ];
     }
 }
