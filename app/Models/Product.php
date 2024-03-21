@@ -16,6 +16,8 @@ class Product extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $appends = ['imageURL'];
+
     public function unitOfMeasure(): BelongsTo
     {
         return $this->belongsTo(unitOfMeasure::class);
@@ -29,5 +31,13 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class);
+    }
+
+    protected function getImageURLAttribute() {
+        if($this->image) {
+            return asset(\Storage::url('products/'.$this->image));
+        }
+
+        return '';
     }
 }

@@ -6,8 +6,8 @@ import InputError from "@/Components/InputError.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SelectInput from "@/Components/SelectInput.vue";
-import FileInput from '@/components/FileInput.vue';
-import FormControl from '@/components/FormControl.vue';
+import FileInput from "@/components/FileInput.vue";
+import FormControl from "@/components/FormControl.vue";
 import { useForm } from "@inertiajs/vue3";
 import { ref, onMounted } from "vue";
 import Swal from "sweetalert2";
@@ -21,21 +21,24 @@ const isOpenAdvancedOptions = ref(false);
 
 const types = ref([
     { id: "product", description: "Producto" },
-    { id: "service", description: "Servicio" }
+    { id: "service", description: "Servicio" },
 ]);
 
 const form = useForm({
     id: null,
-    code: '',
-    name: '',
-    cost: '',
-    unit_of_measure_id: '',
-    warehouse_id: '',
-    type: '',
-    images: '',
-    minimum_stock: '',
+    code: "",
+    name: "",
+    cost: "",
+    unit_of_measure_id: "",
+    warehouse_id: "",
+    type: "",
+    image: "",
+    imageURL: "",
+    images: "",
+    minimum_stock: "",
     initial_stock: 10,
-    category_id: ''
+    category_id: "",
+    method: "POST",
 });
 
 onMounted(() => {
@@ -80,19 +83,15 @@ const getProduct = () => {
 
 const save = () => {
     form.clearErrors();
-    if (id.value) {
-        form.put(route("products.update", id.value), {
-            onSuccess: () => {
-                ok("Datos actualizados correctamente.");
-            },
-        });
-    } else {
-        form.post(route("products.store"), {
-            onSuccess: () => {
-                ok("Datos creados correctamente.");
-            },
-        });
-    }
+    form.post(route("products.store"), {
+        onSuccess: () => {
+            ok(
+                !id.value
+                    ? "Datos creados correctamente."
+                    : "Datos actualizados correctamente."
+            );
+        },
+    });
 };
 
 const ok = (msj) => {
@@ -109,18 +108,13 @@ defineExpose({
 <template>
     <Modal :show="modal" @close="closeModal">
         <h2 class="p-3 text-xl font-black text-hray-900 dark:text-white">
-            {{
-                id ? "Editar producto" : "Nuevo producto"
-            }}
+            {{ id ? "Editar producto" : "Nuevo producto" }}
         </h2>
         <hr />
         <div class="flex flex-wrap items-center mt-6">
             <div class="w-full p-3 mt-1">
                 <div class="sm:flex items-center justify-between">
-                    <InputLabel
-                        for="name"
-                        value="Nombre *"
-                    ></InputLabel>
+                    <InputLabel for="name" value="Nombre *"></InputLabel>
                     <div class="sm:w-3/4">
                         <TextInput
                             id="name"
@@ -137,10 +131,7 @@ defineExpose({
             </div>
             <div class="w-full p-3 mt-1">
                 <div class="sm:flex items-center justify-between">
-                    <InputLabel
-                        for="code"
-                        value="Codigo *"
-                    ></InputLabel>
+                    <InputLabel for="code" value="Codigo *"></InputLabel>
                     <div class="sm:w-3/4">
                         <TextInput
                             id="code"
@@ -157,12 +148,15 @@ defineExpose({
             </div>
             <div class="w-full p-3 mt-1">
                 <div class="sm:flex items-center justify-between">
-                    <InputLabel
-                        for="cost"
-                        value="Costo *"
-                    ></InputLabel>
+                    <InputLabel for="cost" value="Costo *"></InputLabel>
                     <div class="sm:w-3/4">
-                        <FormControl id="cost" v-model="form.cost" inputmode="numeric" type="number" class="w-full"/>
+                        <FormControl
+                            id="cost"
+                            v-model="form.cost"
+                            inputmode="numeric"
+                            type="number"
+                            class="w-full"
+                        />
                         <InputError
                             :message="form.errors.cost"
                             class="mt-2"
@@ -192,7 +186,10 @@ defineExpose({
             </div>
             <div class="w-full p-3 mt-1">
                 <div class="sm:flex w-full items-center justify-between">
-                    <InputLabel for="unit_of_measure" value="Unidad *"></InputLabel>
+                    <InputLabel
+                        for="unit_of_measure"
+                        value="Unidad *"
+                    ></InputLabel>
                     <div class="sm:w-3/4">
                         <SelectInput
                             id="unit_of_measure"
@@ -212,7 +209,10 @@ defineExpose({
             </div>
             <div class="w-full p-3 mt-1">
                 <div class="sm:flex w-full items-center justify-between">
-                    <InputLabel for="category_id" value="Categoría *"></InputLabel>
+                    <InputLabel
+                        for="category_id"
+                        value="Categoría *"
+                    ></InputLabel>
                     <div class="sm:w-3/4">
                         <SelectInput
                             id="category_id"
@@ -253,7 +253,7 @@ defineExpose({
         </div>
         <div class="flex flex-wrap items-center mt-6">
             <h5
-                class="ml-3  dark:text-white cursor-pointer hover:underline w-full"
+                class="ml-3 dark:text-white cursor-pointer hover:underline w-full"
                 @click="isOpenAdvancedOptions = !isOpenAdvancedOptions"
             >
                 {{ isOpenAdvancedOptions ? "Ocultar" : "Ver" }} opciones
@@ -262,18 +262,21 @@ defineExpose({
             <template v-if="isOpenAdvancedOptions">
                 <div class="w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
-                        <InputLabel
-                            for="images"
-                            value="Imagen"
-                        ></InputLabel>
+                        <InputLabel for="images" value="Imagen"></InputLabel>
                         <div class="sm:w-3/4">
-                            <FileInput v-model="form.images" onlyImages/>
-                            <template v-for="(errorMessage, key) in form.errors">
+                            <FileInput
+                                v-model="form.images"
+                                onlyImages
+                                :initialImageUrl="form.imageURL"
+                            />
+                            <template
+                                v-for="(errorMessage, key) in form.errors"
+                            >
                                 <InputError
-                                  v-if="key.startsWith('images.')"
-                                  :key="key"
-                                  :message="errorMessage"
-                                  class="mt-2"
+                                    v-if="key.startsWith('images.')"
+                                    :key="key"
+                                    :message="errorMessage"
+                                    class="mt-2"
                                 ></InputError>
                             </template>
                         </div>
@@ -286,7 +289,12 @@ defineExpose({
                             value="Stock mínimo"
                         ></InputLabel>
                         <div class="sm:w-3/4">
-                            <FormControl id="minimum_stock" v-model="form.minimum_stock" type="number" class="w-full"/>
+                            <FormControl
+                                id="minimum_stock"
+                                v-model="form.minimum_stock"
+                                type="number"
+                                class="w-full"
+                            />
                             <InputError
                                 :message="form.errors.minimum_stock"
                                 class="mt-2"
@@ -301,7 +309,12 @@ defineExpose({
                             value="Stock inicial *"
                         ></InputLabel>
                         <div class="sm:w-3/4">
-                            <FormControl id="initial_stock" v-model="form.initial_stock" type="number" class="w-full"/>
+                            <FormControl
+                                id="initial_stock"
+                                v-model="form.initial_stock"
+                                type="number"
+                                class="w-full"
+                            />
                             <InputError
                                 :message="form.errors.initial_stock"
                                 class="mt-2"

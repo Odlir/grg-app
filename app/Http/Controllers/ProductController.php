@@ -51,8 +51,23 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $data = new Product($request->input());
-        $data->save();
+        if($request->input('method') === "POST") {
+            $product = new Product($request->input());
+            $product->save();
+        } else {
+            $product = Product::find($request->input("id"));
+            $product->update($request->input());
+        }
+
+        if($request->file('images') && $product) {
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->storeAs('public/products', $imageName);
+
+                $product->image = $imageName;
+                $product->save();
+            }
+        }
 
         return redirect('products');
     }
@@ -71,10 +86,22 @@ class ProductController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * This functions not works when you send formData(images), it's a problem of PHP
      */
     public function update(ProductRequest $request, Product $product)
     {
         $product->update($request->input());
+
+        if($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->storeAs('public/products', $imageName);
+
+                $product->image = $imageName;
+                $product->save();
+            }
+        }
+
         return redirect('products');
     }
 

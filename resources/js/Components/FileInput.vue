@@ -1,10 +1,11 @@
 <script setup>
 import { FwbFileInput } from "flowbite-vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 const props = defineProps({
     multiple: Boolean,
-    onlyImages: Boolean
+    onlyImages: Boolean,
+    initialImageUrl: String
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -26,6 +27,12 @@ const handleFileInputChange = (event) => {
         emit("update:modelValue", fileList);
     }
 };
+
+onMounted(() => {
+  if (props.initialImageUrl) {
+    imageUrls.value = [props.initialImageUrl];
+  }
+})
 </script>
 
 <template>
