@@ -83,6 +83,7 @@ const getProduct = () => {
 
 const save = () => {
     form.clearErrors();
+    if(id.value) form.method = 'PUT';
     form.post(route("products.store"), {
         onSuccess: () => {
             ok(
