@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->char('status')->comment('0-Disactive/1-Active')->default(1);
-            $table->double('profit_percentage');
             $table->timestamps();
             $table->softDeletes();
         });

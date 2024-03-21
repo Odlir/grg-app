@@ -18,8 +18,7 @@ class ProductCategoryFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'description' => fake()->sentence(),
-            'profit_percentage' => fake()->numberBetween(1,100),
+            'description' => fake()->sentence()
         ];
     }
 }
