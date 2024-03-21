@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useMainStore } from '@/stores/main'
 import FormControlIcon from '@/Components/FormControlIcon.vue'
 
@@ -51,7 +51,8 @@ const props = defineProps({
   required: Boolean,
   borderless: Boolean,
   transparent: Boolean,
-  ctrlKFocus: Boolean
+  ctrlKFocus: Boolean,
+  onlyPositiveNumbers: Boolean
 })
 
 const emit = defineEmits(['update:modelValue', 'setRef'])
@@ -125,6 +126,12 @@ if (props.ctrlKFocus) {
     mainStore.isFieldFocusRegistered = false
   })
 }
+
+watch(computedValue, (newValue, oldValue) => {
+  if (props.type === "number" && props.onlyPositiveNumbers && newValue <= 0) {
+    computedValue.value = oldValue
+  }
+})
 </script>
 
 <template>

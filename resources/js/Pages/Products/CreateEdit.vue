@@ -157,6 +157,7 @@ defineExpose({
                             inputmode="numeric"
                             type="number"
                             class="w-full"
+                            onlyPositiveNumbers
                         />
                         <InputError
                             :message="form.errors.cost"
@@ -295,6 +296,7 @@ defineExpose({
                                 v-model="form.minimum_stock"
                                 type="number"
                                 class="w-full"
+                                onlyPositiveNumbers
                             />
                             <InputError
                                 :message="form.errors.minimum_stock"
@@ -315,6 +317,7 @@ defineExpose({
                                 v-model="form.initial_stock"
                                 type="number"
                                 class="w-full"
+                                onlyPositiveNumbers
                             />
                             <InputError
                                 :message="form.errors.initial_stock"
