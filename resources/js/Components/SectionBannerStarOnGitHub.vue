@@ -1,5 +1,5 @@
 <script setup>
-import SectionBanner from '@/components/SectionBanner.vue';
+import SectionBanner from '@/Components/SectionBanner.vue';
 import { gradientBgPinkRed } from '@/colors';
 </script>
 

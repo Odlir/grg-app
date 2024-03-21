@@ -4,7 +4,7 @@ import Table from "@/Components/Table.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import CreateEditModal from "@/Pages/Products/CreateEdit.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
-import SectionMain from "@/components/SectionMain.vue";
+import SectionMain from "@/Components/SectionMain.vue";
 import { ref } from "vue";
 import { useForm, router } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
