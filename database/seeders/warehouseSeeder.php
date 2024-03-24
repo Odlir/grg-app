@@ -14,7 +14,7 @@ class warehouseSeeder extends Seeder
     public function run(): void
     {
         $warehouse = [
-            ['name' => 'ATE', 'description' => 'Calle los Incas1', 'establishment_id' => '1', 'department_id' => '15', 'province_id' => '1501', 'district_id' => '150103', 'status' => 1],
+            ['name' => 'ATE', 'description' => 'Calle los Incas1', 'establishment_id' => '1', 'department_id' => '150000', 'province_id' => '150100', 'district_id' => '150103', 'status' => 1],
         ];
 
         warehouse::insert($warehouse);

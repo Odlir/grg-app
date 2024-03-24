@@ -12,9 +12,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('provinces', function (Blueprint $table) {
-            $table->string('id',4)->primary();
+            $table->string('id',6)->primary();
             $table->string('name');
-            $table->string('department_id',2);
+            $table->string('department_id',6);
             $table->foreign('department_id')->references('id')->on('departments');
         });
     }

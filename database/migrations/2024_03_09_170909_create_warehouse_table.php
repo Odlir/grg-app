@@ -17,9 +17,9 @@ return new class extends Migration {
             $table->string('description')->nullable();
             $table->unsignedBigInteger('establishment_id');
             $table->foreign('establishment_id')->references('id')->on('establishment');
-            $table->string('department_id', 2);
+            $table->string('department_id',6);
             $table->foreign('department_id')->references('id')->on('departments');
-            $table->string('province_id', 4);
+            $table->string('province_id', 6);
             $table->foreign('province_id')->references('id')->on('provinces');
             $table->string('district_id', 6);
             $table->foreign('district_id')->references('id')->on('districts');

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('districts', function (Blueprint $table) {
             $table->string('id', 6)->primary();
             $table->string('name');
-            $table->string('province_id', 4);
+            $table->string('province_id', 6);
             $table->foreign('province_id')->references('id')->on('provinces');
         });
     }
