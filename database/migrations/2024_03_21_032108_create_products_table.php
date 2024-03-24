@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\defaultColumnsHelper;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +19,6 @@ return new class extends Migration
             $table->double('cost');
             $table->unsignedBigInteger('unit_of_measure_id');
             $table->unsignedBigInteger('warehouse_id');
-            $table->char('status')->comment('0-Inactive/1-Active')->default(1);
             $table->enum('type', ['product', 'service']);
             $table->string('image', 500)->nullable();
             $table->double('minimum_stock')->nullable();
@@ -27,8 +27,7 @@ return new class extends Migration
             $table->foreign('unit_of_measure_id')->references('id')->on('unit_of_measure');
             $table->foreign('category_id')->references('id')->on('products_category');
             $table->foreign('warehouse_id')->references('id')->on('warehouse');
-            $table->timestamps();
-            $table->softDeletes();
+            defaultColumnsHelper::defaultColumns($table);
         });
     }
 

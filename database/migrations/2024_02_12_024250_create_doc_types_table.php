@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('doc_types', function (Blueprint $table) {
             $table->id();
             $table->string('description');
-            $table->timestamps();
-            $table->char('status')->comment('0-Inactive/1-Active')->default(1);
-            $table->softDeletes();
         });
     }
 

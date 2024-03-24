@@ -11,13 +11,13 @@ use App\Models\warehouse;
 class CatalogueController extends Controller
 {
     public function getDocTypes() {
-        $data = DocType::where('status', '1')->get();
+        $data = DocType::all();
 
         return response()->json($data, 200);
     }
 
     public function getPersonTypes() {
-        $data = PersonType::where('status', '1')->get();
+        $data = PersonType::all();
 
         return response()->json($data, 200);
     }

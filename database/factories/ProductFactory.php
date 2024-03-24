@@ -28,7 +28,8 @@ class ProductFactory extends Factory
             'type' => fake()->randomElement(['product', 'service']),
             'minimum_stock' => fake()->numberBetween(1,100),
             'initial_stock' => fake()->numberBetween(1,100),
-            'category_id' => ProductCategory::all()->random()->id
+            'category_id' => ProductCategory::all()->random()->id,
+            'status' => 1
         ];
     }
 }

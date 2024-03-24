@@ -54,6 +54,7 @@ class ProductController extends Controller
     {
         if($request->input('method') === "POST") {
             $product = new Product($request->input());
+            $product->status = 1;
             $product->save();
         } else {
             $product = Product::find($request->input("id"));
@@ -119,7 +120,7 @@ class ProductController extends Controller
 
      public function destroy(Product $product)
      {
-         $product->status = '0';
+         $product->status = 0;
          $product->save();
          $product->delete();
          return redirect('products');

@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\defaultColumnsHelper;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,9 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->char('status')->comment('0-Inactive/1-Active')->default(1);
-            $table->timestamps();
-            $table->softDeletes();
+            defaultColumnsHelper::defaultColumns($table);
         });
     }
 

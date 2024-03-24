@@ -48,6 +48,7 @@ class PersonController extends Controller
     public function store(PersonRequest $request)
     {
         $data = new Person($request->input());
+        $data->status = 1;
         $data->save();
 
         foreach ($request->input()['persontype'] as $value) {
@@ -90,7 +91,7 @@ class PersonController extends Controller
      */
     public function destroy(Person $person)
     {
-        $person->status = '0';
+        $person->status = 0;
         $person->save();
         $person->delete();
         return redirect('people');

@@ -18,7 +18,8 @@ class ProductBrandFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'description' => fake()->sentence()
+            'description' => fake()->sentence(),
+            'status' => 1
         ];
     }
 }

@@ -32,6 +32,7 @@ class PersonFactory extends Factory
             'email' => fake()->email(),
             'location' => $this->generateCoordinates(),
             'ubigeo' => District::all()->random()->id,
+            'status' => 1
         ];
     }
 
