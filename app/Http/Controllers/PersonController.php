@@ -75,6 +75,13 @@ class PersonController extends Controller
     public function update(PersonRequest $request, Person $person)
     {
         $person->update($request->input());
+        $person->persontype()->detach();
+
+        foreach ($request->input()['persontype'] as $value) {
+            $detalle_tipo_persona = new PersonTypeDetail(['person_id' => $person->id, 'person_type_id' => $value]);
+            $detalle_tipo_persona->save();
+        }
+
         return redirect('people');
     }
 

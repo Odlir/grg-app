@@ -292,7 +292,6 @@ defineExpose({
                     <InputLabel for="persontype" value="Tipo"></InputLabel>
                     <div class="sm:w-3/4">
                         <MultiSelect class="w-full" :options="person_types" label="descripcion" v-model="form.persontype"></MultiSelect>
-
                         <InputError
                             :message="form.errors.persontype"
                             class="mt-2"
