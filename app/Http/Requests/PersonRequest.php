@@ -16,17 +16,17 @@ class PersonRequest extends FormRequest
         $rules = [];
 
         if ($this->doc_types == "1") {
-            $rules['nro_documento'] = 'required|digits:8|unique:people,nro_documento,' . $this->id . ',id,estado,1';
+            $rules['document_number'] = 'required|digits:8|unique:people,document_number,' . $this->id . ',id,status,1';
         } else {
-            $rules['nro_documento'] = 'required|digits:11|unique:people,nro_documento,' . $this->id . ',id,estado,1';
+            $rules['document_number'] = 'required|digits:11|unique:people,document_number,' . $this->id . ',id,status,1';
         }
 
-        $rules['nombre_legal'] = 'required';
-        $rules['direccion'] = 'required';
+        $rules['legal_name'] = 'required';
+        $rules['direction'] = 'required';
         $rules['doc_types'] = 'required|exists:doc_types,id';
         $rules['persontype'] = 'required';
-        $rules['correo'] = 'nullable|email';
-        $rules['genero'] = "nullable|in:masculino,femenino";
+        $rules['email'] = 'nullable|email';
+        $rules['gender'] = "nullable|in:male,female";
         $rules['rating'] = "nullable|in:1,2,3,4,5";
 
         return $rules;
@@ -35,21 +35,21 @@ class PersonRequest extends FormRequest
     public function messages()
     {
         $messages = [];
-        $messages['nombre_legal.required'] = 'El nombre legal es requerido.';
-        $messages['direccion.required'] = 'La dirección es requerida.';
+        $messages['legal_name.required'] = 'El nombre legal es requerido.';
+        $messages['direction.required'] = 'La dirección es requerida.';
         $messages['doc_types.required'] = 'El tipo de documento es requerido.';
         $messages['doc_types.exists'] = 'El tipo de documento seleccionado no existe.';
         $messages['persontype.required'] = 'El tipo de persona es requerido.';
-        $messages['correo.email'] = "El correo debe tener un formato correcto.";
+        $messages['email.email'] = "El email debe tener un formato correcto.";
 
         if ($this->doc_types == "1") {
-            $messages['nro_documento.required'] = 'El DNI es requerido.';
-            $messages['nro_documento.digits'] = 'El DNI debe ser numérico y tener 8 digitos.';
-            $messages['nro_documento.unique'] = 'El DNI ya existe.';
+            $messages['document_number.required'] = 'El DNI es requerido.';
+            $messages['document_number.digits'] = 'El DNI debe ser numérico y tener 8 digitos.';
+            $messages['document_number.unique'] = 'El DNI ya existe.';
         } else {
-            $messages['nro_documento.required'] = 'El RUC es requerido.';
-            $messages['nro_documento.digits'] = 'El RUC debe ser numérico y tener 11 digitos.';
-            $messages['nro_documento.unique'] = 'El RUC ya existe.';
+            $messages['document_number.required'] = 'El RUC es requerido.';
+            $messages['document_number.digits'] = 'El RUC debe ser numérico y tener 11 digitos.';
+            $messages['document_number.unique'] = 'El RUC ya existe.';
         }
 
         return $messages;

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->char('status')->comment('0-Disactive/1-Active')->default(1);
+            $table->char('status')->comment('0-Inactive/1-Active')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

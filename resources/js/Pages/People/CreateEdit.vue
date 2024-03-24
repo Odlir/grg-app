@@ -22,38 +22,38 @@ const id = ref("");
 const markerLocation = ref("");
 const isOpenAdvancedOptions = ref(false);
 const genders = ref([
-    { id: "masculino", descripcion: "Masculino" },
-    { id: "femenino", descripcion: "Femenino" },
+    { id: "male", description: "Masculino" },
+    { id: "female", description: "Femenino" },
 ]);
 const ratings = ref([
-    { id: "1", descripcion: "Muy malo" },
-    { id: "2", descripcion: "Malo" },
-    { id: "3", descripcion: "Bueno" },
-    { id: "4", descripcion: "Muy bueno" },
-    { id: "5", descripcion: "Excelente" },
+    { id: "1", description: "Muy malo" },
+    { id: "2", description: "Malo" },
+    { id: "3", description: "Bueno" },
+    { id: "4", description: "Muy bueno" },
+    { id: "5", description: "Excelente" },
 ]);
 
 const form = useForm({
     id: null,
     doc_types: 2,
-    nro_documento: "",
-    nombre_legal: "",
-    direccion: "",
+    document_number: "",
+    legal_name: "",
+    direction: "",
     alias: "",
-    genero: "",
+    gender: "",
     rating: "",
-    distrito: {
-        nombre: "",
-        provincia: {
-            nombre: "",
-            departamento: {
-                nombre: "",
+    district: {
+        name: "",
+        province: {
+            name: "",
+            department: {
+                name: "",
             },
         },
     },
-    telefono: "",
-    correo: "",
-    ubicacion: "",
+    phone: "",
+    email: "",
+    location: "",
     ubigeo: "",
     persontype: null
 });
@@ -79,11 +79,11 @@ const getCatalogue = () => {
 const getProvinces = () => {
     provinces.value = [];
     districts.value = [];
-    form.distrito.provincia_id = null;
+    form.district.province_id = null;
     form.ubigeo = null;
 
     axios
-        .get(route("getProvinces", form.distrito.provincia.departamento_id))
+        .get(route("getProvinces", form.district.province.department_id))
         .then((response) => {
             provinces.value = response.data;
         });
@@ -94,7 +94,7 @@ const getDistricts = () => {
     form.ubigeo = null;
 
     axios
-        .get(route("getDistricts", form.distrito.provincia_id))
+        .get(route("getDistricts", form.district.province_id))
         .then((response) => {
             districts.value = response.data;
         });
@@ -125,8 +125,8 @@ const getPerson = () => {
         modal.value = true;
         getUbigeo();
         isOpenAdvancedOptions.value = true;
-        if(form.ubicacion) {
-            const latlng = form.ubicacion.split(",");
+        if(form.location) {
+            const latlng = form.location.split(",");
             markerLocation.value = { lat: latlng[0], lng: latlng[1] };
         }
         if(form.persontype) {
@@ -136,25 +136,25 @@ const getPerson = () => {
 };
 
 const getUbigeo = () => {
-    if (form.distrito) {
+    if (form.district) {
         axios
-            .get(route("getProvinces", form.distrito.provincia.departamento_id))
+            .get(route("getProvinces", form.district.province.department_id))
             .then((response) => {
                 provinces.value = response.data;
             });
 
         axios
-            .get(route("getDistricts", form.distrito.provincia_id))
+            .get(route("getDistricts", form.district.province_id))
             .then((response) => {
                 districts.value = response.data;
             });
     } else {
-        form.distrito = {
-            nombre: null,
-            provincia: {
-                nombre: null,
-                departamento: {
-                    nombre: null,
+        form.district = {
+            name: null,
+            province: {
+                name: null,
+                department: {
+                    name: null,
                 },
             },
         };
@@ -180,7 +180,7 @@ const save = () => {
 
 const onClickMarker = (latlng) => {
     if (latlng) {
-        form.ubicacion = latlng.lat + "," + latlng.lng;
+        form.location = latlng.lat + "," + latlng.lng;
     }
 };
 
@@ -214,7 +214,7 @@ defineExpose({
                         <SelectInput
                             id="doc_types"
                             :options="doc_types"
-                            name="descripcion"
+                            name="description"
                             v-model="form.doc_types"
                             type="text"
                             class="w-full"
@@ -229,19 +229,19 @@ defineExpose({
             <div class="sm:w-6/12 w-full p-3 mt-1">
                 <div class="sm:flex items-center justify-between">
                     <InputLabel
-                        for="nro_documento"
+                        for="document_number"
                         value="N° de Documento *"
                     ></InputLabel>
                     <div class="sm:w-3/4">
                         <TextInput
-                            id="nro_documento"
-                            v-model="form.nro_documento"
+                            id="document_number"
+                            v-model="form.document_number"
                             type="text"
                             class="w-full"
                         ></TextInput>
 
                         <InputError
-                            :message="form.errors.nro_documento"
+                            :message="form.errors.document_number"
                             class="mt-2"
                         ></InputError>
                     </div>
@@ -250,18 +250,18 @@ defineExpose({
             <div class="w-full p-3 mt-1">
                 <div class="sm:flex items-center justify-between">
                     <InputLabel
-                        for="nombre_legal"
+                        for="legal_name"
                         value="Nombre legal *"
                     ></InputLabel>
                     <div class="sm:w-3/4">
                         <TextInput
-                            id="nombre_legal"
-                            v-model="form.nombre_legal"
+                            id="legal_name"
+                            v-model="form.legal_name"
                             type="text"
                             class="w-full"
                         ></TextInput>
                         <InputError
-                            :message="form.errors.nombre_legal"
+                            :message="form.errors.legal_name"
                             class="mt-2"
                         ></InputError>
                     </div>
@@ -270,18 +270,18 @@ defineExpose({
             <div class="w-full p-3 mt-1">
                 <div class="sm:flex items-center justify-between">
                     <InputLabel
-                        for="direccion"
+                        for="direction"
                         value="Dirección *"
                     ></InputLabel>
                     <div class="sm:w-3/4">
                         <TextInput
-                            id="direccion"
-                            v-model="form.direccion"
+                            id="direction"
+                            v-model="form.direction"
                             type="text"
                             class="w-full"
                         ></TextInput>
                         <InputError
-                            :message="form.errors.direccion"
+                            :message="form.errors.direction"
                             class="mt-2"
                         ></InputError>
                     </div>
@@ -291,7 +291,7 @@ defineExpose({
                 <div class="sm:flex w-full items-center justify-between">
                     <InputLabel for="persontype" value="Tipo"></InputLabel>
                     <div class="sm:w-3/4">
-                        <MultiSelect class="w-full" :options="person_types" label="descripcion" v-model="form.persontype"></MultiSelect>
+                        <MultiSelect class="w-full" :options="person_types" v-model="form.persontype"></MultiSelect>
                         <InputError
                             :message="form.errors.persontype"
                             class="mt-2"
@@ -328,19 +328,19 @@ defineExpose({
                 </div>
                 <div class="w-full p-3 mt-1">
                     <div class="sm:flex w-full items-center justify-between">
-                        <InputLabel for="genero" value="Género"></InputLabel>
+                        <InputLabel for="gender" value="Género"></InputLabel>
                         <div class="sm:w-3/4">
                             <SelectInput
-                                id="genero"
+                                id="gender"
                                 :options="genders"
-                                name="descripcion"
-                                v-model="form.genero"
+                                name="description"
+                                v-model="form.gender"
                                 type="text"
                                 class="w-full"
                             ></SelectInput>
 
                             <InputError
-                                :message="form.errors.genero"
+                                :message="form.errors.gender"
                                 class="mt-2"
                             ></InputError>
                         </div>
@@ -349,18 +349,18 @@ defineExpose({
                 <div class="w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
                         <InputLabel
-                            for="telefono"
+                            for="phone"
                             value="Teléfono"
                         ></InputLabel>
                         <div class="sm:w-3/4">
                             <TextInput
-                                id="telefono"
-                                v-model="form.telefono"
+                                id="phone"
+                                v-model="form.phone"
                                 type="text"
                                 class="w-full"
                             ></TextInput>
                             <InputError
-                                :message="form.errors.telefono"
+                                :message="form.errors.phone"
                                 class="mt-2"
                             ></InputError>
                         </div>
@@ -369,18 +369,18 @@ defineExpose({
                 <div class="w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
                         <InputLabel
-                            for="correo"
+                            for="email"
                             value="Correo electrónico"
                         ></InputLabel>
                         <div class="sm:w-3/4">
                             <TextInput
-                                id="correo"
-                                v-model="form.correo"
+                                id="email"
+                                v-model="form.email"
                                 type="text"
                                 class="w-full"
                             ></TextInput>
                             <InputError
-                                :message="form.errors.correo"
+                                :message="form.errors.email"
                                 class="mt-2"
                             ></InputError>
                         </div>
@@ -396,7 +396,7 @@ defineExpose({
                             <SelectInput
                                 id="rating"
                                 :options="ratings"
-                                name="descripcion"
+                                name="description"
                                 v-model="form.rating"
                                 type="text"
                                 class="w-full"
@@ -418,9 +418,9 @@ defineExpose({
                             <SelectInput
                                 id="department"
                                 :options="departments"
-                                name="nombre"
+                                name="name"
                                 v-model="
-                                    form.distrito.provincia.departamento_id
+                                    form.district.province.department_id
                                 "
                                 @update:modelValue="getProvinces"
                                 type="text"
@@ -439,8 +439,8 @@ defineExpose({
                             <SelectInput
                                 id="province"
                                 :options="provinces"
-                                name="nombre"
-                                v-model="form.distrito.provincia_id"
+                                name="name"
+                                v-model="form.district.province_id"
                                 @update:modelValue="getDistricts"
                                 type="text"
                                 class="w-full"
@@ -458,7 +458,7 @@ defineExpose({
                             <SelectInput
                                 id="district"
                                 :options="districts"
-                                name="nombre"
+                                name="name"
                                 v-model="form.ubigeo"
                                 type="text"
                                 class="w-full"

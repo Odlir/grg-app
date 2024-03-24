@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Departamento;
-use App\Models\Provincia;
-use App\Models\Distrito;
+use App\Models\Department;
+use App\Models\Province;
+use App\Models\District;
 
 class UbigeoController extends Controller
 {
     function getDepartments()
     {
-        $data = Departamento::all();
+        $data = Department::all();
 
         return response()->json($data, 200);
     }
 
     function getProvinceByDepartmentId($id)
     {
-        $data = Provincia::where('departamento_id', $id)
+        $data = Province::where('department_id', $id)
         ->get();
 
         return response()->json($data, 200);
@@ -25,7 +25,7 @@ class UbigeoController extends Controller
 
     function getDistrictByProvinceId($id)
     {
-        $data = Distrito::where('provincia_id', $id)
+        $data = District::where('province_id', $id)
         ->get();
 
         return response()->json($data, 200);

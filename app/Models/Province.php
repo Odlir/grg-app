@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Departamento extends Model
+class Province extends Model
 {
     use HasFactory;
 
     protected $keyType = 'string';
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

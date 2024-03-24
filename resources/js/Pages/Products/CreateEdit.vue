@@ -84,6 +84,10 @@ const getProduct = () => {
         Object.assign(form, response.data);
         modal.value = true;
         isOpenAdvancedOptions.value = true;
+
+        if(form.brands) {
+            form.brands = form.brands.map(item => item.id);
+        }
     });
 };
 

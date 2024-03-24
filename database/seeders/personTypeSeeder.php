@@ -13,12 +13,12 @@ class personTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $tiposPersona = [
-            ['descripcion'=>'Cliente'],
-            ['descripcion'=>'Proveedor'],
-            ['descripcion'=>'Empleado']
+        $personTypes = [
+            ['description'=>'Cliente'],
+            ['description'=>'Proveedor'],
+            ['description'=>'Empleado']
         ];
 
-        personType::insert($tiposPersona);
+        personType::insert($personTypes);
     }
 }

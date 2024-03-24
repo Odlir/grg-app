@@ -13,19 +13,19 @@ class establishment extends Model
     protected $fillable = ['name','description','creation_user','modification_user','elimination_user','status'];
     protected $keyType = 'string';
 
-    public function departamento()
+    public function department()
     {
-        return $this->belongsTo(Departamento::class);
+        return $this->belongsTo(Department::class);
     }
 
-    public function provincia()
+    public function province()
     {
-        return $this->belongsTo(Provincia::class);
+        return $this->belongsTo(Province::class);
     }
 
-    public function distrito()
+    public function district()
     {
-        return $this->belongsTo(Distrito::class);
+        return $this->belongsTo(District::class);
     }
 
 }

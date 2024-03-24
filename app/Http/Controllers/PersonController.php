@@ -16,22 +16,22 @@ class PersonController extends Controller
      */
     public function index()
     {
-        $query = Person::select(['people.*', 'doc_types.descripcion as docdesc'])
+        $query = Person::select(['people.*', 'doc_types.description as docdesc'])
         ->join('doc_types', 'people.doc_types', '=', 'doc_types.id')
         ->with('persontype')
         ->latest('people.id');
 
-        if(request()->input('nombre_legal')) {
-            $query->where('nombre_legal', 'LIKE', '%' . request()->input('nombre_legal') . '%');
+        if(request()->input('legal_name')) {
+            $query->where('legal_name', 'LIKE', '%' . request()->input('legal_name') . '%');
         }
 
         if(request()->input('docdesc')) {
-            $query->where('nro_documento', 'LIKE', '%' . request()->input('docdesc') . '%');
+            $query->where('document_number', 'LIKE', '%' . request()->input('docdesc') . '%');
         }
 
         if(request()->input('perdesc')) {
             $query->whereHas('persontype', function ($q){
-                $q->where("descripcion", "LIKE", "%".request()->input('perdesc')."%");
+                $q->where("description", "LIKE", "%".request()->input('perdesc')."%");
             });
         }
 
@@ -51,8 +51,8 @@ class PersonController extends Controller
         $data->save();
 
         foreach ($request->input()['persontype'] as $value) {
-            $detalle_tipo_persona = new PersonTypeDetail(['person_id' => $data->id, 'person_type_id' => $value]);
-            $detalle_tipo_persona->save();
+            $person_type_detail = new PersonTypeDetail(['person_id' => $data->id, 'person_type_id' => $value]);
+            $person_type_detail->save();
         }
 
         return redirect('people');
@@ -63,7 +63,7 @@ class PersonController extends Controller
      */
     public function show(Person $person)
     {
-        $person->load('distrito.provincia.departamento');
+        $person->load('district.province.department');
         $person->load('persontype');
 
         return $person;
@@ -78,8 +78,8 @@ class PersonController extends Controller
         $person->persontype()->detach();
 
         foreach ($request->input()['persontype'] as $value) {
-            $detalle_tipo_persona = new PersonTypeDetail(['person_id' => $person->id, 'person_type_id' => $value]);
-            $detalle_tipo_persona->save();
+            $person_type_detail = new PersonTypeDetail(['person_id' => $person->id, 'person_type_id' => $value]);
+            $person_type_detail->save();
         }
 
         return redirect('people');
@@ -90,7 +90,7 @@ class PersonController extends Controller
      */
     public function destroy(Person $person)
     {
-        $person->estado = '0';
+        $person->status = '0';
         $person->save();
         $person->delete();
         return redirect('people');

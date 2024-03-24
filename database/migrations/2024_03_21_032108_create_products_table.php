@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('cost');
             $table->unsignedBigInteger('unit_of_measure_id');
             $table->unsignedBigInteger('warehouse_id');
-            $table->char('status')->comment('0-Disactive/1-Active')->default(1);
+            $table->char('status')->comment('0-Inactive/1-Active')->default(1);
             $table->enum('type', ['product', 'service']);
             $table->string('image', 500)->nullable();
             $table->double('minimum_stock')->nullable();

@@ -36,7 +36,7 @@ class ProductController extends Controller
 
         if(request()->input('category')) {
             $query->whereHas('category', function ($q){
-                $q->where("description", "LIKE", "%".request()->input('category')."%");
+                $q->where("name", "LIKE", "%".request()->input('category')."%");
             });
         }
 

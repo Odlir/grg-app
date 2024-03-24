@@ -14,7 +14,7 @@ class establishmentSeeder extends Seeder
     public function run(): void
     {
         $establishment = [
-            ['name' => 'ATE', 'description' => 'Calle los Incass','departamento_id' => '15','provincia_id' => '1501','distrito_id' => '150103', 'status' => 1],
+            ['name' => 'ATE', 'description' => 'Calle los Incass','department_id' => '15','province_id' => '1501','district_id' => '150103', 'status' => 1],
         ];
 
         establishment::insert($establishment);

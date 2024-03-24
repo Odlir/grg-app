@@ -14,21 +14,21 @@ return new class extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('doc_types');
-            $table->string('nro_documento');
-            $table->string('nombre_legal');
-            $table->string('direccion');
+            $table->string('document_number');
+            $table->string('legal_name');
+            $table->string('direction');
             $table->string('alias')->unique()->nullable();
-            $table->enum('genero', ['masculino', 'femenino'])->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->enum('rating',['1','2','3','4','5'])->nullable();
-            $table->string('telefono')->nullable();
-            $table->string('correo')->nullable();
-            $table->string('ubicacion')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('location')->nullable();
             $table->string('ubigeo', 6)->nullable();
             $table->timestamps();
-            $table->char('estado')->comment('0-Inactivo/1-Activo')->default(1);
+            $table->char('status')->comment('0-Inactive/1-Active')->default(1);
             $table->softDeletes();
             $table->foreign('doc_types')->references('id')->on('doc_types');
-            $table->foreign('ubigeo')->references('id')->on('distritos');
+            $table->foreign('ubigeo')->references('id')->on('districts');
         });
     }
 

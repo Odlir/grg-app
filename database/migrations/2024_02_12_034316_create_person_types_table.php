@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('person_types', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion');
-            $table->char('estado')->comment('0-Inactivo/1-Activo')->default(1);
+            $table->string('description');
+            $table->char('status')->comment('0-Inactive/1-Active')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

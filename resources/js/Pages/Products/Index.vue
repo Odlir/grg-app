@@ -87,10 +87,10 @@ const deleteRow = (id) => {
                         {{item.unit_of_measure.description}}
                     </template>
                     <template #cell(warehouse)="{ value, item }">
-                        {{item.warehouse.description}}
+                        {{item.warehouse.name}}
                     </template>
                     <template #cell(category)="{ value, item }">
-                        {{item.category.description}}
+                        {{item.category.name}}
                     </template>
                 </Table>
                 <Pagination :links="products.links" />
