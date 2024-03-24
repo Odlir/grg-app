@@ -8,6 +8,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SelectInput from "@/Components/SelectInput.vue";
 import FileInput from "@/Components/FileInput.vue";
 import FormControl from "@/Components/FormControl.vue";
+import MultiSelect from "@/Components/MultiSelect.vue";
 import { useForm } from "@inertiajs/vue3";
 import { ref, onMounted } from "vue";
 import Swal from "sweetalert2";
@@ -16,6 +17,7 @@ const modal = ref(false);
 const unitsOfMeasure = ref(null);
 const warehouses = ref(null);
 const categories = ref(null);
+const brands= ref(null);
 const id = ref("");
 const isOpenAdvancedOptions = ref(false);
 
@@ -38,6 +40,7 @@ const form = useForm({
     minimum_stock: "",
     initial_stock: 10,
     category_id: "",
+    brands: null,
     method: "POST",
 });
 
@@ -54,6 +57,9 @@ const getCatalogue = () => {
     });
     axios.get(route("getProductCategories")).then((response) => {
         categories.value = response.data;
+    });
+    axios.get(route("getProductBrands")).then((response) => {
+        brands.value = response.data;
     });
 };
 
@@ -219,7 +225,7 @@ defineExpose({
                         <SelectInput
                             id="category_id"
                             :options="categories"
-                            name="description"
+                            name="name"
                             v-model="form.category_id"
                             type="text"
                             class="w-full"
@@ -234,7 +240,7 @@ defineExpose({
             </div>
             <div class="w-full p-3 mt-1">
                 <div class="sm:flex w-full items-center justify-between">
-                    <InputLabel for="warehouse_id" value="Almacén"></InputLabel>
+                    <InputLabel for="warehouse_id" value="Almacén *"></InputLabel>
                     <div class="sm:w-3/4">
                         <SelectInput
                             id="warehouse_id"
@@ -281,6 +287,21 @@ defineExpose({
                                     class="mt-2"
                                 ></InputError>
                             </template>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full p-3 mt-1">
+                    <div class="sm:flex items-center justify-between">
+                        <InputLabel
+                            for="brands"
+                            value="Marca"
+                        ></InputLabel>
+                        <div class="sm:w-3/4">
+                            <MultiSelect class="w-full" :options="brands" label="name" v-model="form.brands"></MultiSelect>
+                            <InputError
+                                :message="form.errors.brands"
+                                class="mt-2"
+                            ></InputError>
                         </div>
                     </div>
                 </div>

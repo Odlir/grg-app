@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Models\ProductBrandDetail;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -57,6 +58,12 @@ class ProductController extends Controller
         } else {
             $product = Product::find($request->input("id"));
             $product->update($request->input());
+            $product->brands()->detach();
+        }
+
+        foreach ($request->input()['brands'] as $value) {
+            $product_brand_detail = new ProductBrandDetail(['product_id' => $product->id, 'product_brand_id' => $value]);
+            $product_brand_detail->save();
         }
 
         if($request->file('images') && $product) {
@@ -80,6 +87,7 @@ class ProductController extends Controller
         $product->load('unitOfMeasure');
         $product->load('warehouse');
         $product->load('category');
+        $product->load('brands');
 
         return $product;
     }

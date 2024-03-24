@@ -33,6 +33,11 @@ class Product extends Model
         return $this->belongsTo(ProductCategory::class);
     }
 
+    public function brands()
+    {
+        return $this->belongsToMany(ProductBrand::class, 'product_brand_detail', 'product_id', 'product_brand_id');
+    }
+
     protected function getImageURLAttribute() {
         if($this->image) {
             return asset(\Storage::url('products/'.$this->image));

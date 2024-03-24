@@ -45,6 +45,7 @@ Route::middleware([
     Route::get('/units_of_measure', [CatalogueController::class, 'getUnitsOfMeasure'])->name('getUnitsOfMeasure');
     Route::get('/warehouses', [CatalogueController::class, 'getWarehouses'])->name('getWarehouses');
     Route::get('/product_categories', [CatalogueController::class, 'getProductCategories'])->name('getProductCategories');
+    Route::get('/product_brands', [CatalogueController::class, 'getProductBrands'])->name('getProductBrands');
     Route::get('/departments', [UbigeoController::class, 'getDepartments'])->name('getDepartments');
     Route::get('/provinces/{id}', [UbigeoController::class, 'getProvinceByDepartmentId'])->name('getProvinces');
     Route::get('/districts/{id}', [UbigeoController::class, 'getDistrictByProvinceId'])->name('getDistricts');

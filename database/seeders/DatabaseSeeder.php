@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             warehouseSeeder::class,
             unitOfMeasureSeeder::class,
             ProductCategorySeeder::class,
+            ProductBrandSeeder::class,
             ProductSeeder::class
         ]);
     }
