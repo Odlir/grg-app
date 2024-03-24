@@ -62,9 +62,11 @@ class ProductController extends Controller
             $product->brands()->detach();
         }
 
-        foreach ($request->input()['brands'] as $value) {
-            $product_brand_detail = new ProductBrandDetail(['product_id' => $product->id, 'product_brand_id' => $value]);
-            $product_brand_detail->save();
+        if($request->input('brands') && $product) {
+            foreach ($request->input('brands') as $value) {
+                $product_brand_detail = new ProductBrandDetail(['product_id' => $product->id, 'product_brand_id' => $value]);
+                $product_brand_detail->save();
+            }
         }
 
         if($request->file('images') && $product) {
