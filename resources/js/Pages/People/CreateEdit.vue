@@ -327,7 +327,7 @@ defineExpose({
                 avanzadas
             </h5>
             <template v-if="isOpenAdvancedOptions">
-                <div class="w-full p-3 mt-1">
+                <div class="sm:w-6/12 w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
                         <InputLabel for="alias" value="Alias"></InputLabel>
                         <div class="sm:w-3/4">
@@ -344,7 +344,7 @@ defineExpose({
                         </div>
                     </div>
                 </div>
-                <div class="w-full p-3 mt-1">
+                <div class="sm:w-6/12 w-full p-3 mt-1">
                     <div class="sm:flex w-full items-center justify-between">
                         <InputLabel for="gender" value="Género"></InputLabel>
                         <div class="sm:w-3/4">
@@ -364,7 +364,7 @@ defineExpose({
                         </div>
                     </div>
                 </div>
-                <div class="w-full p-3 mt-1">
+                <div class="sm:w-6/12 w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
                         <InputLabel
                             for="phone"
@@ -384,7 +384,7 @@ defineExpose({
                         </div>
                     </div>
                 </div>
-                <div class="w-full p-3 mt-1">
+                <div class="sm:w-6/12 w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
                         <InputLabel
                             for="email"
@@ -404,7 +404,7 @@ defineExpose({
                         </div>
                     </div>
                 </div>
-                <div class="w-full p-3 mt-1">
+                <div class="sm:w-6/12 w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
                         <InputLabel
                             for="rating"
@@ -426,7 +426,7 @@ defineExpose({
                         </div>
                     </div>
                 </div>
-                <div class="w-full p-3 mt-1">
+                <div class="sm:w-6/12 w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
                         <InputLabel
                             for="department"
@@ -447,7 +447,7 @@ defineExpose({
                         </div>
                     </div>
                 </div>
-                <div class="w-full p-3 mt-1">
+                <div class="sm:w-6/12 w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
                         <InputLabel
                             for="province"
@@ -466,7 +466,7 @@ defineExpose({
                         </div>
                     </div>
                 </div>
-                <div class="w-full p-3 mt-1">
+                <div class="sm:w-6/12 w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
                         <InputLabel
                             for="district"
