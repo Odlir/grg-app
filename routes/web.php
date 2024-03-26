@@ -42,6 +42,7 @@ Route::middleware([
 
     Route::get('/doc_types', [CatalogueController::class, 'getDocTypes'])->name('getDocTypes');
     Route::get('/person_types', [CatalogueController::class, 'getPersonTypes'])->name('getPersonTypes');
+    Route::get('/clients_category', [CatalogueController::class, 'getClientsCategory'])->name('getClientsCategory');
     Route::get('/units_of_measure', [CatalogueController::class, 'getUnitsOfMeasure'])->name('getUnitsOfMeasure');
     Route::get('/warehouses', [CatalogueController::class, 'getWarehouses'])->name('getWarehouses');
     Route::get('/product_categories', [CatalogueController::class, 'getProductCategories'])->name('getProductCategories');

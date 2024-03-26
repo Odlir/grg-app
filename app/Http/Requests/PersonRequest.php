@@ -29,6 +29,10 @@ class PersonRequest extends FormRequest
         $rules['gender'] = "nullable|in:male,female";
         $rules['rating'] = "nullable|in:1,2,3,4,5";
 
+        if (in_array(1, $this->persontype)) {
+            $rules['client_category_id'] = 'required';
+        }
+
         return $rules;
     }
 
@@ -41,6 +45,7 @@ class PersonRequest extends FormRequest
         $messages['doc_types.exists'] = 'El tipo de documento seleccionado no existe.';
         $messages['persontype.required'] = 'El tipo de persona es requerido.';
         $messages['email.email'] = "El email debe tener un formato correcto.";
+        $messages['client_category_id.required'] = "El tipo de precio es requerido.";
 
         if ($this->doc_types == "1") {
             $messages['document_number.required'] = 'El DNI es requerido.';

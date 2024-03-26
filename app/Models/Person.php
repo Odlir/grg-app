@@ -12,7 +12,7 @@ class Person extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['doc_types','document_number','legal_name', 'direction',
-        'alias','gender', 'phone', 'email','location','ubigeo', 'rating'];
+        'alias','gender', 'phone', 'email','location','ubigeo', 'rating', 'client_category_id'];
 
     protected $dates = ['deleted_at'];
 

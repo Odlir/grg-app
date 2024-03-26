@@ -15,6 +15,7 @@ import Map from "@/Components/Map.vue";
 const modal = ref(false);
 const doc_types = ref(null);
 const person_types = ref(null);
+const clients_category = ref(null);
 const departments = ref([]);
 const provinces = ref([]);
 const districts = ref([]);
@@ -42,6 +43,7 @@ const form = useForm({
     alias: "",
     gender: "",
     rating: "",
+    client_category_id: "",
     district: {
         name: "",
         province: {
@@ -69,6 +71,10 @@ const getCatalogue = () => {
 
     axios.get(route("getPersonTypes")).then((response) => {
         person_types.value = response.data;
+    });
+
+    axios.get(route("getClientsCategory")).then((response) => {
+        clients_category.value = response.data;
     });
 
     axios.get(route("getDepartments")).then((response) => {
@@ -289,11 +295,23 @@ defineExpose({
             </div>
             <div class="w-full p-3 mt-1">
                 <div class="sm:flex w-full items-center justify-between">
-                    <InputLabel for="persontype" value="Tipo"></InputLabel>
+                    <InputLabel for="persontype" value="Tipo *"></InputLabel>
                     <div class="sm:w-3/4">
                         <MultiSelect class="w-full" :options="person_types" v-model="form.persontype"></MultiSelect>
                         <InputError
                             :message="form.errors.persontype"
+                            class="mt-2"
+                        ></InputError>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full p-3 mt-1" v-if="form.persontype && form.persontype.includes(1)">
+                <div class="sm:flex w-full items-center justify-between">
+                    <InputLabel for="client_category_id" value="Tipo de precio *"></InputLabel>
+                    <div class="sm:w-3/4">
+                        <MultiSelect class="w-full" label="name" :options="clients_category" v-model="form.client_category_id" :multiple="false"></MultiSelect>
+                        <InputError
+                            :message="form.errors.client_category_id"
                             class="mt-2"
                         ></InputError>
                     </div>

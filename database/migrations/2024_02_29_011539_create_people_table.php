@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('document_number');
             $table->string('legal_name');
             $table->string('direction');
+            $table->unsignedBigInteger('client_category_id')->nullable();
             $table->string('alias')->unique()->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->enum('rating',['1','2','3','4','5'])->nullable();
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('location')->nullable();
             $table->string('ubigeo', 6)->nullable();
+            $table->foreign('client_category_id')->references('id')->on('clients_category');
             $table->foreign('doc_types')->references('id')->on('doc_types');
             $table->foreign('ubigeo')->references('id')->on('districts');
             defaultColumnsHelper::defaultColumns($table);

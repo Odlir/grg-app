@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\ClientCategory;
 use App\Models\DocType;
 use App\Models\PersonType;
 use App\Models\ProductBrand;
@@ -18,6 +19,12 @@ class CatalogueController extends Controller
 
     public function getPersonTypes() {
         $data = PersonType::all();
+
+        return response()->json($data, 200);
+    }
+
+    public function getClientsCategory() {
+        $data = ClientCategory::where('status', '1')->get();
 
         return response()->json($data, 200);
     }

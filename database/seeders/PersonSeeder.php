@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ClientCategory;
 use App\Models\Person;
 use App\Models\personType;
 use App\Models\PersonTypeDetail;
@@ -21,6 +22,11 @@ class PersonSeeder extends Seeder
                 'person_id' => $person->id,
                 'person_type_id' => $personType,
             ]);
+
+            if($personType === 1) {
+                $person->client_category_id = ClientCategory::all()->random()->id;
+                $person->save();
+            }
         });
     }
 }
