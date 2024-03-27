@@ -60,7 +60,11 @@ const emit = defineEmits(['update:modelValue', 'setRef'])
 const computedValue = computed({
   get: () => props.modelValue,
   set: (value) => {
-    emit('update:modelValue', value)
+    if (props.onlyPositiveNumbers && value < 0) {
+      emit('update:modelValue', null)
+    } else {
+      emit('update:modelValue', value)
+    }
   }
 })
 
@@ -72,6 +76,10 @@ const inputElClass = computed(() => {
     props.borderless ? 'border-0' : 'border',
     props.transparent ? 'bg-transparent dark:bg-transparent' : 'bg-white'
   ]
+
+  if(props.onlyPositiveNumbers) {
+    base.push('no-spinner');
+  }
 
   if (props.icon) {
     base.push('pl-10')
@@ -126,12 +134,6 @@ if (props.ctrlKFocus) {
     mainStore.isFieldFocusRegistered = false
   })
 }
-
-watch(computedValue, (newValue, oldValue) => {
-  if (props.type === "number" && props.onlyPositiveNumbers && newValue <= 0) {
-    computedValue.value = oldValue
-  }
-})
 </script>
 
 <template>
@@ -174,3 +176,16 @@ watch(computedValue, (newValue, oldValue) => {
     <FormControlIcon v-if="icon" :icon="icon" :h="controlIconH" />
   </div>
 </template>
+
+<style scoped>
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  /* Ocultar las flechas de incremento y decremento */
+  -webkit-appearance: none;
+  margin: 0; /* Ajustar el margen */
+}
+.no-spinner {
+  /* Ocultar las flechas de incremento y decremento en Firefox */
+  -moz-appearance: textfield;
+}
+</style>
