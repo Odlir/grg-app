@@ -26,7 +26,7 @@ class Product extends Model
 
     public function warehouses(): BelongsToMany
     {
-        return $this->belongsToMany(warehouse::class, 'product_warehouse', 'product_id', 'warehouse_id')->withPivot(["initial_stock"]);
+        return $this->belongsToMany(warehouse::class, 'product_warehouse', 'product_id', 'warehouse_id')->withPivot(["stock"]);
     }
 
     public function category(): BelongsTo
@@ -55,7 +55,7 @@ class Product extends Model
                 $warehousesDetail[] = [
                     'id' => $warehouse->pivot->id,
                     'warehouse_id' => $warehouse->id,
-                    'initial_stock' => $warehouse->pivot->initial_stock
+                    'initial_stock' => $warehouse->pivot->stock
                 ];
             }
         }

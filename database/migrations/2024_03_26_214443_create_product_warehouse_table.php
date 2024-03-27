@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->unsignedBigInteger('warehouse_id');
             $table->foreign('warehouse_id')->references('id')->on('warehouse');
-            $table->double('initial_stock');
+            $table->double('stock');
             $table->timestamps();
         });
     }

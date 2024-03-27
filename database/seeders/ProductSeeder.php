@@ -29,7 +29,7 @@ class ProductSeeder extends Seeder
             ProductWarehouse::create([
                 'product_id' => $product->id,
                 'warehouse_id' => $warehouse,
-                'initial_stock' => fake()->numberBetween(1,20)
+                'stock' => fake()->numberBetween(1,20)
             ]);
         });
     }

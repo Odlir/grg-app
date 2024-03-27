@@ -11,5 +11,5 @@ class ProductWarehouse extends Model
 
     protected $table="product_warehouse";
 
-    protected $fillable = ['product_id','warehouse_id', 'initial_stock'];
+    protected $fillable = ['product_id','warehouse_id', 'stock'];
 }

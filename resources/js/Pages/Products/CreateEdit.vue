@@ -307,7 +307,7 @@ defineExpose({
                     <div class="sm:flex items-center justify-between">
                         <InputLabel
                             :for="`initial_stock${index}`"
-                            :value="`Stock inicial - Almacén Nro ${index + 1}*`"
+                            :value="`Stock ${!id ? 'inicial' : ''} - Almacén Nro ${index + 1}*`"
                         ></InputLabel>
                         <div class="sm:w-3/4">
                             <FormControl

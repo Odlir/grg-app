@@ -65,7 +65,7 @@ class ProductController extends Controller
 
                 if ($request->input('warehouses_detail') && $product) {
                     foreach ($request->input('warehouses_detail') as $value) {
-                        $product_warehouse_detail = new ProductWarehouse(['product_id' => $product->id, 'warehouse_id' => $value['warehouse_id'], 'initial_stock' => $value['initial_stock']]);
+                        $product_warehouse_detail = new ProductWarehouse(['product_id' => $product->id, 'warehouse_id' => $value['warehouse_id'], 'stock' => $value['initial_stock']]);
                         $product_warehouse_detail->save();
 
                         Kardex::insert(['product_warehouse_id' => $product_warehouse_detail->id, 'type' => 'initial_entry', 'cost' => $product->cost]);
