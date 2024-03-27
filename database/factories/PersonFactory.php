@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Distrito;
+use App\Models\District;
 use App\Models\DocType;
 use App\Models\personType;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,16 +22,17 @@ class PersonFactory extends Factory
     {
         return [
             'doc_types' => DocType::all()->random()->id,
-            'nro_documento' => fake()->numerify('#########'),
-            'nombre_legal' => fake()->name(),
-            'direccion' => fake()->address(),
+            'document_number' => fake()->numerify('#########'),
+            'legal_name' => fake()->name(),
+            'direction' => fake()->address(),
             'alias' => fake()->name(),
-            'genero' => fake()->randomElement(['masculino', 'femenino']),
+            'gender' => fake()->randomElement(['male', 'female']),
             'rating' => fake()->randomElement(['1','2','3','4','5']),
-            'telefono' => fake()->numerify('###-###-###'),
-            'correo' => fake()->email(),
-            'ubicacion' => $this->generateCoordinates(),
-            'ubigeo' => Distrito::all()->random()->id,
+            'phone' => fake()->numerify('###-###-###'),
+            'email' => fake()->email(),
+            'location' => $this->generateCoordinates(),
+            'ubigeo' => District::all()->random()->id,
+            'status' => 1
         ];
     }
 

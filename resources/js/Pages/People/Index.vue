@@ -7,7 +7,7 @@ import Rating from "@/Components/Rating.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import CreateEditModal from "@/Pages/People/CreateEdit.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
-import SectionMain from "@/components/SectionMain.vue";
+import SectionMain from "@/Components/SectionMain.vue";
 import { ref } from "vue";
 import { useForm, router } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
@@ -17,11 +17,11 @@ const props = defineProps({
 });
 
 const cols = [
-    { headerName: "Razón Social", colName: "nombre_legal", isSearchable: true },
+    { headerName: "Razón Social", colName: "legal_name", isSearchable: true },
     { headerName: "Documento", colName: "docdesc", isSearchable: true },
     { headerName: "Tipo", colName: "perdesc", isSearchable: true },
     { headerName: "Calificación", colName: "rating", isSearchable: false },
-    { headerName: "Teléfono", colName: "telefono", isSearchable: false },
+    { headerName: "Teléfono", colName: "phone", isSearchable: false },
 ];
 
 const modalRegEditRef = ref(null);
@@ -88,14 +88,14 @@ const deleteRow = (id) => {
                 >
                     <template #cell(docdesc)="{ value, item }">
                         <strong>{{ item.docdesc.toUpperCase() }}</strong>
-                        {{ item.nro_documento }}
+                        {{ item.document_number }}
                     </template>
 
                     <template #cell(perdesc)="{ value, item }">
                         {{
                             item.persontype
                                 .map(function (item) {
-                                    return item.descripcion;
+                                    return item.description;
                                 })
                                 .join(", ")
                         }}

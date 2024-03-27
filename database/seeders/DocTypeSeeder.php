@@ -14,8 +14,8 @@ class DocTypeSeeder extends Seeder
     public function run(): void
     {
         $tipos = [
-            ['descripcion'=>'DNI'],
-            ['descripcion'=>'RUC'],
+            ['description'=>'DNI'],
+            ['description'=>'RUC'],
         ];
 
         DocType::insert($tipos);

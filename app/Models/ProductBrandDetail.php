@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Departamento extends Model
+class ProductBrandDetail extends Model
 {
     use HasFactory;
 
-    protected $keyType = 'string';
+    protected $table="product_brand_detail";
+
+    protected $fillable = ['product_id','product_brand_id'];
 }

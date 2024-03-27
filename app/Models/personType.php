@@ -11,7 +11,7 @@ class personType extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = "person_types";
-    protected $fillable = ['descripcion','estado'];
+    protected $fillable = ['description'];
 
     /**
      * The attributes that should be mutated to dates.

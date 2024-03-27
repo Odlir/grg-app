@@ -3,10 +3,10 @@ import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { mdiChevronUp, mdiChevronDown } from '@mdi/js';
 import { Link } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
-import BaseIcon from '@/components/BaseIcon.vue';
-import UserAvatarCurrentUser from '@/components/UserAvatarCurrentUser.vue';
-import NavBarMenuList from '@/components/NavBarMenuList.vue';
-import BaseDivider from '@/components/BaseDivider.vue';
+import BaseIcon from '@/Components/BaseIcon.vue';
+import UserAvatarCurrentUser from '@/Components/UserAvatarCurrentUser.vue';
+import NavBarMenuList from '@/Components/NavBarMenuList.vue';
+import BaseDivider from '@/Components/BaseDivider.vue';
 
 const props = defineProps({
   item: {

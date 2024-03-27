@@ -78,6 +78,22 @@ const Ziggy = {
             "methods": ["GET", "HEAD"],
             "parameters": ["person"],
             "bindings": {"person": "id"}
+        },
+        "product.index": {"uri": "products", "methods": ["GET", "HEAD"]},
+        "product.create": {"uri": "products\/create", "methods": ["GET", "HEAD"]},
+        "product.store": {"uri": "products", "methods": ["POST"]},
+        "product.show": {
+            "uri": "products\/{products}\/edit",
+            "methods": ["GET", "HEAD"],
+            "parameters": ["product"],
+            "bindings": {"product": "id"}
+        },
+        "product.update": {"uri": "products\/update", "methods": ["POST"]},
+        "product.destroy": {
+            "uri": "products\/{product}\/delete",
+            "methods": ["GET", "HEAD"],
+            "parameters": ["product"],
+            "bindings": {"product": "id"}
         }
     }
 };

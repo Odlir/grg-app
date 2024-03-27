@@ -16,12 +16,12 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('description')->nullable();
-            $table->string('departamento_id',2);
-            $table->foreign('departamento_id')->references('id')->on('departamentos');
-            $table->string('provincia_id',4);
-            $table->foreign('provincia_id')->references('id')->on('provincias');
-            $table->string('distrito_id',6);
-            $table->foreign('distrito_id')->references('id')->on('distritos');
+            $table->string('department_id',6);
+            $table->foreign('department_id')->references('id')->on('departments');
+            $table->string('province_id',6);
+            $table->foreign('province_id')->references('id')->on('provinces');
+            $table->string('district_id',6);
+            $table->foreign('district_id')->references('id')->on('districts');
             defaultColumnsHelper::defaultColumns($table);
         });
     }

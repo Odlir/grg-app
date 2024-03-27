@@ -1,7 +1,7 @@
 <script setup>
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useMainStore } from '@/stores/main'
-import FormControlIcon from '@/components/FormControlIcon.vue'
+import FormControlIcon from '@/Components/FormControlIcon.vue'
 
 const props = defineProps({
   name: {
@@ -40,6 +40,10 @@ const props = defineProps({
     type: String,
     default: 'text'
   },
+  class: {
+    type: String,
+    default: '',
+  },
   modelValue: {
     type: [String, Number, Boolean, Array, Object],
     default: ''
@@ -47,7 +51,8 @@ const props = defineProps({
   required: Boolean,
   borderless: Boolean,
   transparent: Boolean,
-  ctrlKFocus: Boolean
+  ctrlKFocus: Boolean,
+  onlyPositiveNumbers: Boolean
 })
 
 const emit = defineEmits(['update:modelValue', 'setRef'])
@@ -55,18 +60,26 @@ const emit = defineEmits(['update:modelValue', 'setRef'])
 const computedValue = computed({
   get: () => props.modelValue,
   set: (value) => {
-    emit('update:modelValue', value)
+    if (props.onlyPositiveNumbers && value < 0) {
+      emit('update:modelValue', null)
+    } else {
+      emit('update:modelValue', value)
+    }
   }
 })
 
 const inputElClass = computed(() => {
   const base = [
-    'px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full',
-    'dark:placeholder-gray-400',
+    'border-gray-300 dark:border-gray-700 dark:text-white dark:bg-slate-700 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm',
+    props.class,
     computedType.value === 'textarea' ? 'h-24' : 'h-12',
     props.borderless ? 'border-0' : 'border',
-    props.transparent ? 'bg-transparent' : 'bg-white dark:bg-slate-800'
+    props.transparent ? 'bg-transparent dark:bg-transparent' : 'bg-white'
   ]
+
+  if(props.onlyPositiveNumbers) {
+    base.push('no-spinner');
+  }
 
   if (props.icon) {
     base.push('pl-10')
@@ -163,3 +176,16 @@ if (props.ctrlKFocus) {
     <FormControlIcon v-if="icon" :icon="icon" :h="controlIconH" />
   </div>
 </template>
+
+<style scoped>
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  /* Ocultar las flechas de incremento y decremento */
+  -webkit-appearance: none;
+  margin: 0; /* Ajustar el margen */
+}
+.no-spinner {
+  /* Ocultar las flechas de incremento y decremento en Firefox */
+  -moz-appearance: textfield;
+}
+</style>

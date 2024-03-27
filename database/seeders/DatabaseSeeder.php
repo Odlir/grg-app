@@ -15,11 +15,16 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DocTypeSeeder::class,
             personTypeSeeder::class,
+            ClientCategorySeeder::class,
             UbigeoSeeder::class,
             PersonSeeder::class,
             establishmentSeeder::class,
             warehouseSeeder::class,
             unitOfMeasureSeeder::class,
+            ProductCategorySeeder::class,
+            ProductBrandSeeder::class,
+            ProductSeeder::class,
+            CurrencySeeder::class,
         ]);
     }
 }
