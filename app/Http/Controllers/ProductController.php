@@ -53,40 +53,42 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        if($request->input('method') === "POST") {
-            $product = new Product($request->input());
-            $product->status = 1;
-            $product->save();
-        } else {
-            $product = Product::find($request->input("id"));
-            $product->update($request->input());
-            $product->brands()->detach();
-            $product->warehouses()->detach();
-        }
-
-        if($request->input('brands') && $product) {
-            foreach ($request->input('brands') as $value) {
-                $product_brand_detail = new ProductBrandDetail(['product_id' => $product->id, 'product_brand_id' => $value]);
-                $product_brand_detail->save();
-            }
-        }
-
-        if($request->input('warehouses_detail') && $product) {
-            foreach ($request->input('warehouses_detail') as $value) {
-                $product_warehouse_detail = new ProductWarehouse(['product_id' => $product->id, 'warehouse_id' => $value['warehouse_id'], 'initial_stock' => $value['initial_stock']]);
-                $product_warehouse_detail->save();
-            }
-        }
-
-        if($request->file('images') && $product) {
-            foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . $image->getClientOriginalName();
-                $image->storeAs('public/products', $imageName);
-
-                $product->image = $imageName;
+        \DB::transaction(function () use ($request) {
+            if($request->input('method') === "POST") {
+                $product = new Product($request->input());
+                $product->status = 1;
                 $product->save();
+            } else {
+                $product = Product::find($request->input("id"));
+                $product->update($request->input());
+                $product->brands()->detach();
+                $product->warehouses()->detach();
             }
-        }
+
+            if($request->input('brands') && $product) {
+                foreach ($request->input('brands') as $value) {
+                    $product_brand_detail = new ProductBrandDetail(['product_id' => $product->id, 'product_brand_id' => $value]);
+                    $product_brand_detail->save();
+                }
+            }
+
+            if($request->input('warehouses_detail') && $product) {
+                foreach ($request->input('warehouses_detail') as $value) {
+                    $product_warehouse_detail = new ProductWarehouse(['product_id' => $product->id, 'warehouse_id' => $value['warehouse_id'], 'initial_stock' => $value['initial_stock']]);
+                    $product_warehouse_detail->save();
+                }
+            }
+
+            if($request->file('images') && $product) {
+                foreach ($request->file('images') as $image) {
+                    $imageName = time() . '_' . $image->getClientOriginalName();
+                    $image->storeAs('public/products', $imageName);
+
+                    $product->image = $imageName;
+                    $product->save();
+                }
+            }
+        });
 
         return redirect('products');
     }
@@ -110,17 +112,19 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        $product->update($request->input());
+        \DB::transaction(function () use ($request, $product) {
+            $product->update($request->input());
 
-        if($request->file('images')) {
-            foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . $image->getClientOriginalName();
-                $image->storeAs('public/products', $imageName);
+            if($request->file('images')) {
+                foreach ($request->file('images') as $image) {
+                    $imageName = time() . '_' . $image->getClientOriginalName();
+                    $image->storeAs('public/products', $imageName);
 
-                $product->image = $imageName;
-                $product->save();
+                    $product->image = $imageName;
+                    $product->save();
+                }
             }
-        }
+        });
 
         return redirect('products');
     }

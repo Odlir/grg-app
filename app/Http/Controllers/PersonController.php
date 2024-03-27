@@ -47,14 +47,16 @@ class PersonController extends Controller
      */
     public function store(PersonRequest $request)
     {
-        $data = new Person($request->input());
-        $data->status = 1;
-        $data->save();
+        \DB::transaction(function () use ($request) {
+            $data = new Person($request->input());
+            $data->status = 1;
+            $data->save();
 
-        foreach ($request->input()['persontype'] as $value) {
-            $person_type_detail = new PersonTypeDetail(['person_id' => $data->id, 'person_type_id' => $value]);
-            $person_type_detail->save();
-        }
+            foreach ($request->input()['persontype'] as $value) {
+                $person_type_detail = new PersonTypeDetail(['person_id' => $data->id, 'person_type_id' => $value]);
+                $person_type_detail->save();
+            }
+        });
 
         return redirect('people');
     }
@@ -75,13 +77,16 @@ class PersonController extends Controller
      */
     public function update(PersonRequest $request, Person $person)
     {
-        $person->update($request->input());
-        $person->persontype()->detach();
+        \DB::transaction(function () use ($request, $person) {
+            $person->update($request->input());
+            $person->persontype()->detach();
 
-        foreach ($request->input()['persontype'] as $value) {
-            $person_type_detail = new PersonTypeDetail(['person_id' => $person->id, 'person_type_id' => $value]);
-            $person_type_detail->save();
-        }
+            foreach ($request->input()['persontype'] as $value) {
+                $person_type_detail = new PersonTypeDetail(['person_id' => $person->id, 'person_type_id' => $value]);
+                $person_type_detail->save();
+            }
+
+        });
 
         return redirect('people');
     }
