@@ -68,7 +68,8 @@ class ProductController extends Controller
                         $product_warehouse_detail = new ProductWarehouse(['product_id' => $product->id, 'warehouse_id' => $value['warehouse_id'], 'stock' => $value['initial_stock']]);
                         $product_warehouse_detail->save();
 
-                        Kardex::insert(['product_warehouse_id' => $product_warehouse_detail->id, 'type' => 'initial_entry', 'cost' => $product->cost]);
+                        $kardex = new Kardex(['product_warehouse_id' => $product_warehouse_detail->id, 'type' => 'initial_entry', 'cost' => $product->cost]);
+                        $kardex->save();
 
                         $inventory = Inventory::where('warehouse_id', $value['warehouse_id'])->first();
 
