@@ -93,8 +93,6 @@ const getProduct = () => {
         if (form.warehouses) {
             form.warehouses = form.warehouses.map((item) => item.id);
         }
-
-        console.log("form", form);
     });
 };
 
@@ -290,6 +288,7 @@ defineExpose({
                             :options="warehouses"
                             label="name"
                             v-model="form.warehouses"
+                            :disabled="id"
                         ></MultiSelect>
 
                         <InputError
@@ -317,7 +316,9 @@ defineExpose({
                                 type="number"
                                 class="w-full"
                                 onlyPositiveNumbers
+                                v-if="!id"
                             />
+                            <span v-if="id" class="dark:text-white">{{item.initial_stock}}</span>
                         </div>
                     </div>
                 </div>

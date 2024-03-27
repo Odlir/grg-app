@@ -53,6 +53,7 @@ class Product extends Model
         if($this->warehouses) {
             foreach ($this->warehouses as $warehouse) {
                 $warehousesDetail[] = [
+                    'id' => $warehouse->pivot->id,
                     'warehouse_id' => $warehouse->id,
                     'initial_stock' => $warehouse->pivot->initial_stock
                 ];

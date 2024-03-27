@@ -57,6 +57,8 @@ watchEffect(() => {
     --vs-selected-bg: rgb(63 131 248);
     --vs-selected-color: #eeeeee;
 
+    --vs-disabled-bg: initial;
+
     --vs-search-input-color: #eeeeee;
     --vs-dropdown-option--active-bg: rgb(63 131 248);
     }
