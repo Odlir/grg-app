@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Models\ProductBrandDetail;
+use App\Models\ProductWarehouse;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -16,7 +17,7 @@ class ProductController extends Controller
     {
         $query = Product::where('status','1')
         ->with('unitOfMeasure')
-        ->with('warehouse')
+        ->with('warehouses')
         ->with('category')
         ->latest('products.id');
 
@@ -60,12 +61,20 @@ class ProductController extends Controller
             $product = Product::find($request->input("id"));
             $product->update($request->input());
             $product->brands()->detach();
+            $product->warehouses()->detach();
         }
 
         if($request->input('brands') && $product) {
             foreach ($request->input('brands') as $value) {
                 $product_brand_detail = new ProductBrandDetail(['product_id' => $product->id, 'product_brand_id' => $value]);
                 $product_brand_detail->save();
+            }
+        }
+
+        if($request->input('warehouses_detail') && $product) {
+            foreach ($request->input('warehouses_detail') as $value) {
+                $product_warehouse_detail = new ProductWarehouse(['product_id' => $product->id, 'warehouse_id' => $value['warehouse_id'], 'initial_stock' => $value['initial_stock']]);
+                $product_warehouse_detail->save();
             }
         }
 
@@ -88,7 +97,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product->load('unitOfMeasure');
-        $product->load('warehouse');
+        $product->load('warehouses');
         $product->load('category');
         $product->load('brands');
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
@@ -12,20 +13,20 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['name','code','cost', 'unit_of_measure_id',
-        'warehouse_id','type', 'image', 'minimum_stock','initial_stock','category_id'];
+        'type', 'image', 'minimum_stock', 'category_id'];
 
     protected $dates = ['deleted_at'];
 
-    protected $appends = ['imageURL'];
+    protected $appends = ['imageURL', 'warehouses_detail'];
 
     public function unitOfMeasure(): BelongsTo
     {
         return $this->belongsTo(unitOfMeasure::class);
     }
 
-    public function warehouse(): BelongsTo
+    public function warehouses(): BelongsToMany
     {
-        return $this->belongsTo(warehouse::class);
+        return $this->belongsToMany(warehouse::class, 'product_warehouse', 'product_id', 'warehouse_id')->withPivot(["initial_stock"]);
     }
 
     public function category(): BelongsTo
@@ -44,5 +45,20 @@ class Product extends Model
         }
 
         return '';
+    }
+
+    protected function getWarehousesDetailAttribute() {
+        $warehousesDetail = [];
+
+        if($this->warehouses) {
+            foreach ($this->warehouses as $warehouse) {
+                $warehousesDetail[] = [
+                    'warehouse_id' => $warehouse->id,
+                    'initial_stock' => $warehouse->pivot->initial_stock
+                ];
+            }
+        }
+
+        return $warehousesDetail;
     }
 }

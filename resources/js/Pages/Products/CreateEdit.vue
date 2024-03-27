@@ -10,14 +10,14 @@ import FileInput from "@/Components/FileInput.vue";
 import FormControl from "@/Components/FormControl.vue";
 import MultiSelect from "@/Components/MultiSelect.vue";
 import { useForm } from "@inertiajs/vue3";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import Swal from "sweetalert2";
 
 const modal = ref(false);
 const unitsOfMeasure = ref(null);
 const warehouses = ref(null);
 const categories = ref(null);
-const brands= ref(null);
+const brands = ref(null);
 const id = ref("");
 const isOpenAdvancedOptions = ref(false);
 
@@ -32,7 +32,8 @@ const form = useForm({
     name: "",
     cost: "",
     unit_of_measure_id: "",
-    warehouse_id: "",
+    warehouses_detail: null,
+    warehouses: null,
     type: "",
     image: "",
     imageURL: "",
@@ -85,15 +86,21 @@ const getProduct = () => {
         modal.value = true;
         isOpenAdvancedOptions.value = true;
 
-        if(form.brands) {
-            form.brands = form.brands.map(item => item.id);
+        if (form.brands) {
+            form.brands = form.brands.map((item) => item.id);
         }
+
+        if (form.warehouses) {
+            form.warehouses = form.warehouses.map((item) => item.id);
+        }
+
+        console.log("form", form);
     });
 };
 
 const save = () => {
     form.clearErrors();
-    if(id.value) form.method = 'PUT';
+    if (id.value) form.method = "PUT";
     form.post(route("products.store"), {
         onSuccess: () => {
             ok(
@@ -111,6 +118,34 @@ const ok = (msj) => {
     Swal.fire({ title: msj, icon: "success", confirmButtonText: "Aceptar" });
 };
 
+watch(
+    () => form.warehouses,
+    () => {
+        if (form.warehouses) {
+            const newWarehousesDetail = [];
+
+            form.warehouses.forEach((warehouseId) => {
+                const existingWarehouse = form.warehouses_detail.find(
+                    (detail) => detail.warehouse_id === warehouseId
+                );
+
+                if (existingWarehouse) {
+                    newWarehousesDetail.push(existingWarehouse);
+                } else {
+                    newWarehousesDetail.push({
+                        warehouse_id: warehouseId,
+                        initial_stock: 0,
+                    });
+                }
+            });
+
+            form.warehouses_detail = newWarehousesDetail.filter((detail) =>
+                form.warehouses.includes(detail.warehouse_id)
+            );
+        }
+    }
+);
+
 defineExpose({
     open,
 });
@@ -123,7 +158,7 @@ defineExpose({
         </h2>
         <hr />
         <div class="flex flex-wrap items-center mt-6">
-            <div class="w-full p-3 mt-1">
+            <div class="sm:w-6/12 w-full p-3 mt-1">
                 <div class="sm:flex items-center justify-between">
                     <InputLabel for="name" value="Nombre *"></InputLabel>
                     <div class="sm:w-3/4">
@@ -140,7 +175,7 @@ defineExpose({
                     </div>
                 </div>
             </div>
-            <div class="w-full p-3 mt-1">
+            <div class="sm:w-6/12 w-full p-3 mt-1">
                 <div class="sm:flex items-center justify-between">
                     <InputLabel for="code" value="Codigo *"></InputLabel>
                     <div class="sm:w-3/4">
@@ -157,7 +192,7 @@ defineExpose({
                     </div>
                 </div>
             </div>
-            <div class="w-full p-3 mt-1">
+            <div class="sm:w-6/12 w-full p-3 mt-1">
                 <div class="sm:flex items-center justify-between">
                     <InputLabel for="cost" value="Costo *"></InputLabel>
                     <div class="sm:w-3/4">
@@ -176,7 +211,7 @@ defineExpose({
                     </div>
                 </div>
             </div>
-            <div class="w-full p-3 mt-1">
+            <div class="sm:w-6/12 w-full p-3 mt-1">
                 <div class="sm:flex w-full items-center justify-between">
                     <InputLabel for="type" value="Tipo *"></InputLabel>
                     <div class="sm:w-3/4">
@@ -196,7 +231,7 @@ defineExpose({
                     </div>
                 </div>
             </div>
-            <div class="w-full p-3 mt-1">
+            <div class="sm:w-6/12 w-full p-3 mt-1">
                 <div class="sm:flex w-full items-center justify-between">
                     <InputLabel
                         for="unit_of_measure"
@@ -219,7 +254,7 @@ defineExpose({
                     </div>
                 </div>
             </div>
-            <div class="w-full p-3 mt-1">
+            <div class="sm:w-6/12 w-full p-3 mt-1">
                 <div class="sm:flex w-full items-center justify-between">
                     <InputLabel
                         for="category_id"
@@ -244,24 +279,57 @@ defineExpose({
             </div>
             <div class="w-full p-3 mt-1">
                 <div class="sm:flex w-full items-center justify-between">
-                    <InputLabel for="warehouse_id" value="Almacén *"></InputLabel>
+                    <InputLabel
+                        for="warehouses"
+                        value="Almacenes *"
+                    ></InputLabel>
                     <div class="sm:w-3/4">
-                        <SelectInput
-                            id="warehouse_id"
-                            :options="warehouses"
-                            name="description"
-                            v-model="form.warehouse_id"
-                            type="text"
+                        <MultiSelect
+                            id="warehouses"
                             class="w-full"
-                        ></SelectInput>
+                            :options="warehouses"
+                            label="name"
+                            v-model="form.warehouses"
+                        ></MultiSelect>
 
                         <InputError
-                            :message="form.errors.warehouse_id"
+                            :message="form.errors.warehouses"
                             class="mt-2"
                         ></InputError>
                     </div>
                 </div>
             </div>
+            <template v-if="form.warehouses">
+                <div
+                    class="sm:w-6/12 w-full p-3 mt-1"
+                    v-for="(item, index) in form.warehouses_detail"
+                    :key="index"
+                >
+                    <div class="sm:flex items-center justify-between">
+                        <InputLabel
+                            :for="`initial_stock${index}`"
+                            :value="`Stock inicial - Almacén Nro ${index + 1}*`"
+                        ></InputLabel>
+                        <div class="sm:w-3/4">
+                            <FormControl
+                                :id="`initial_stock${index}`"
+                                v-model="item.initial_stock"
+                                type="number"
+                                class="w-full"
+                                onlyPositiveNumbers
+                            />
+                        </div>
+                    </div>
+                </div>
+                <template v-for="(errorMessage, key) in form.errors">
+                    <InputError
+                        v-if="key.startsWith('warehouses_detail.')"
+                        :key="key"
+                        :message="errorMessage"
+                        class="mt-2 w-full"
+                    ></InputError>
+                </template>
+            </template>
         </div>
         <div class="flex flex-wrap items-center mt-6">
             <h5
@@ -294,14 +362,16 @@ defineExpose({
                         </div>
                     </div>
                 </div>
-                <div class="w-full p-3 mt-1">
+                <div class="sm:w-6/12 w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
-                        <InputLabel
-                            for="brands"
-                            value="Marca"
-                        ></InputLabel>
+                        <InputLabel for="brands" value="Marca"></InputLabel>
                         <div class="sm:w-3/4">
-                            <MultiSelect class="w-full" :options="brands" label="name" v-model="form.brands"></MultiSelect>
+                            <MultiSelect
+                                class="w-full"
+                                :options="brands"
+                                label="name"
+                                v-model="form.brands"
+                            ></MultiSelect>
                             <InputError
                                 :message="form.errors.brands"
                                 class="mt-2"
@@ -309,7 +379,7 @@ defineExpose({
                         </div>
                     </div>
                 </div>
-                <div class="w-full p-3 mt-1">
+                <div class="sm:w-6/12 w-full p-3 mt-1">
                     <div class="sm:flex items-center justify-between">
                         <InputLabel
                             for="minimum_stock"
@@ -325,27 +395,6 @@ defineExpose({
                             />
                             <InputError
                                 :message="form.errors.minimum_stock"
-                                class="mt-2"
-                            ></InputError>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full p-3 mt-1">
-                    <div class="sm:flex items-center justify-between">
-                        <InputLabel
-                            for="initial_stock"
-                            value="Stock inicial *"
-                        ></InputLabel>
-                        <div class="sm:w-3/4">
-                            <FormControl
-                                id="initial_stock"
-                                v-model="form.initial_stock"
-                                type="number"
-                                class="w-full"
-                                onlyPositiveNumbers
-                            />
-                            <InputError
-                                :message="form.errors.initial_stock"
                                 class="mt-2"
                             ></InputError>
                         </div>

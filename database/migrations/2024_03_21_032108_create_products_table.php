@@ -18,15 +18,12 @@ return new class extends Migration
             $table->string('code');
             $table->double('cost');
             $table->unsignedBigInteger('unit_of_measure_id');
-            $table->unsignedBigInteger('warehouse_id');
             $table->enum('type', ['product', 'service']);
             $table->string('image', 500)->nullable();
             $table->double('minimum_stock')->nullable();
-            $table->double('initial_stock')->default(10);
             $table->unsignedBigInteger('category_id');
             $table->foreign('unit_of_measure_id')->references('id')->on('unit_of_measure');
             $table->foreign('category_id')->references('id')->on('products_category');
-            $table->foreign('warehouse_id')->references('id')->on('warehouse');
             defaultColumnsHelper::defaultColumns($table);
         });
     }
