@@ -10,7 +10,8 @@ import {
   mdiTelevisionGuide,
   mdiResponsive,
   mdiPalette,
-  mdiReact
+  mdiReact,
+  mdiCubeOutline
 } from '@mdi/js';
 
 export default [
@@ -28,6 +29,11 @@ export default [
         route: 'products.index',
         label: 'Productos',
         icon: mdiSquareEditOutline
+    },
+    {
+        route: 'products_category.index',
+        label: 'Familia de productos',
+        icon: mdiCubeOutline
     },
     {
         route: 'dashboard',

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\UbigeoController;
 
@@ -39,6 +40,7 @@ Route::middleware([
 
     Route::apiResource('people', PersonController::class);
     Route::apiResource('products', ProductController::class);
+    Route::apiResource('products_category', ProductCategoryController::class);
 
     Route::get('/doc_types', [CatalogueController::class, 'getDocTypes'])->name('getDocTypes');
     Route::get('/person_types', [CatalogueController::class, 'getPersonTypes'])->name('getPersonTypes');
